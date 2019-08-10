@@ -125,8 +125,6 @@ class LocalDBTest {
 
             persistenceManager.insertListOfTasks(updatedTasks, gist, companyId)
 
-            persistenceManager.removeListOfTasks(gist, companyId, updatedTasks.lastIndex)
-
             val tasksStored: List<String> =
                 persistenceManager.getListOfTasks(gist, companyId).getItem()
 
@@ -176,12 +174,6 @@ class LocalDBTest {
             val updatedAchievements = listOf("updatedAchievement1", "updatedAchievement2")
 
             persistenceManager.insertListOfAchievements(updatedAchievements, gist, companyId)
-
-            persistenceManager.removeListOfAchievements(
-                gist,
-                companyId,
-                updatedAchievements.lastIndex
-            )
 
             val achievementsStored: List<String> =
                 persistenceManager.getListOfAchievements(gist, companyId).getItem()
@@ -243,6 +235,45 @@ class LocalDBTest {
                 achievementsCompany
             )
             assertEquals(companiesStored.first().tasks.map { it.task }, tasksCompany)
+        }
+    }
+
+    @Test
+    @Throws(InterruptedException::class)
+    fun getEducationForOneUserOrdered() {
+        runBlocking {
+            val gist1 = "gist1"
+            val gist2 = "gist2"
+            val educationUser1 =
+                listOf("education_${gist1}_1", "education_${gist1}_2", "education_${gist1}_3")
+            val educationUser2 =
+                listOf("education_${gist2}_1", "education_${gist2}_2", "education_${gist2}_3")
+
+            persistenceManager.insertEducation(educationUser1, gist1)
+            persistenceManager.insertEducation(educationUser2, gist2)
+            val educationStored: List<String> =
+                persistenceManager.getEducation(gist1).getItem()
+
+            assertEquals(educationStored, educationUser1.asReversed())
+        }
+    }
+
+    @Test
+    @Throws(InterruptedException::class)
+    fun removeExtraEducation() {
+        runBlocking {
+            val gist = "gist"
+            val initialUser1 =
+                listOf("education_${gist}_1", "education_${gist}_2", "education_${gist}_3")
+            val initialUser2 =
+                listOf("education_${gist}_4", "education_${gist}_5")
+            persistenceManager.insertEducation(initialUser1, gist)
+            persistenceManager.insertEducation(initialUser2, gist)
+
+            val educationStored: List<String> =
+                persistenceManager.getEducation(gist).getItem()
+
+            assertEquals(initialUser2.asReversed(), educationStored)
         }
     }
 

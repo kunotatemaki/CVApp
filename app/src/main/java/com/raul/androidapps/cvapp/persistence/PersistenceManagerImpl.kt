@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import com.raul.androidapps.cvapp.model.Expertise
 import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.persistence.databases.CVAppDatabase
-import com.raul.androidapps.cvapp.persistence.entities.AchievementEntity
-import com.raul.androidapps.cvapp.persistence.entities.CompanyEntity
-import com.raul.androidapps.cvapp.persistence.entities.TaskEntity
-import com.raul.androidapps.cvapp.persistence.entities.UserInfoEntity
+import com.raul.androidapps.cvapp.persistence.entities.*
 import com.raul.androidapps.cvapp.persistence.relations.CompanyWithAllInfo
 import javax.inject.Inject
 
@@ -39,9 +36,10 @@ class PersistenceManagerImpl @Inject constructor(
             )
         }
         db.taskDao().insert(listOfTasks)
+        removeListOfTasks(gistId, companyId, listOfTasks.lastIndex)
     }
 
-    override suspend fun removeListOfTasks(gistId: String, companyId: Int, lastPosition: Int) {
+    private suspend fun removeListOfTasks(gistId: String, companyId: Int, lastPosition: Int) {
         db.taskDao().removeListOfTasks(gistId, companyId, lastPosition)
     }
 
@@ -65,9 +63,10 @@ class PersistenceManagerImpl @Inject constructor(
             )
         }
         db.achievementDao().insert(listOfAchievements)
+        removeListOfAchievements(gistId, companyId, listOfAchievements.lastIndex)
     }
 
-    override suspend fun removeListOfAchievements(
+    private suspend fun removeListOfAchievements(
         gistId: String,
         companyId: Int,
         lastPosition: Int
@@ -87,7 +86,25 @@ class PersistenceManagerImpl @Inject constructor(
             insertListOfTasks(it.tasks, gistId, it.id)
             insertListOfAchievements(it.achievements, gistId, it.id)
         }
+    }
 
+    override suspend fun getEducation(gistId: String): LiveData<List<String>> =
+        db.eduationDao().getEducation(gistId)
+
+    override suspend fun insertEducation(educationList: List<String>, gistId: String) {
+        val educationEntities = educationList.mapIndexed { index, education ->
+            EducationEntity.fromEducation(
+                gistId = gistId,
+                position = index,
+                education = education
+            )
+        }
+        db.eduationDao().insert(educationEntities)
+        removeOutdatedEducation(gistId, educationList.lastIndex)
+    }
+
+    private suspend fun removeOutdatedEducation(gistId: String, lastPosition: Int) {
+        db.eduationDao().removeOutdatedEducation(gistId, lastPosition)
     }
 }
 

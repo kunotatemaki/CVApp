@@ -13,6 +13,6 @@ abstract class AchievementDao : BaseDao<AchievementEntity>() {
     abstract fun getListOfAchievements(gistId: String, companyId: Int): LiveData<List<String>>
 
     @Query("DELETE FROM achievement_table WHERE gist_id LIKE :gistId AND company_id = :companyId AND position > :lastPosition")
-    abstract fun removeListOfAchievement(gistId: String, companyId: Int, lastPosition: Int)
+    abstract suspend fun removeListOfAchievement(gistId: String, companyId: Int, lastPosition: Int)
 
 }

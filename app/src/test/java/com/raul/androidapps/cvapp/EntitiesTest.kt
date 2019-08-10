@@ -2,12 +2,10 @@ package com.raul.androidapps.cvapp
 
 import com.raul.androidapps.cvapp.model.Expertise
 import com.raul.androidapps.cvapp.model.Profile
-import com.raul.androidapps.cvapp.persistence.entities.AchievementEntity
-import com.raul.androidapps.cvapp.persistence.entities.CompanyEntity
-import com.raul.androidapps.cvapp.persistence.entities.TaskEntity
-import com.raul.androidapps.cvapp.persistence.entities.UserInfoEntity
+import com.raul.androidapps.cvapp.persistence.entities.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import java.nio.file.attribute.PosixFileAttributeView
 
 
 class EntitiesTest {
@@ -100,6 +98,19 @@ class EntitiesTest {
         assertEquals(entity.name, expertise.company)
         assertEquals(entity.date, expertise.date)
         assertEquals(entity.companyId, expertise.id)
+        assertEquals(entity.gistId, gist)
+    }
+
+    @Test
+    fun entityFromEducation() {
+        val gist = "gist"
+        val education = "university"
+        val position = 0
+
+        val entity = EducationEntity.fromEducation(education = education, position = position, gistId = gist)
+
+        assertEquals(entity.position, position)
+        assertEquals(entity.description, education)
         assertEquals(entity.gistId, gist)
     }
 

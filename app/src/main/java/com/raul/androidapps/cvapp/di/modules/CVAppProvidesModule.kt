@@ -3,8 +3,6 @@ package com.raul.androidapps.cvapp.di.modules
 import android.content.Context
 import com.raul.androidapps.cvapp.persistence.databases.CVAppDatabase
 import com.raul.androidapps.cvapp.CVAppApplication
-import com.raul.androidapps.cvapp.persistence.utils.DatabasePopulateTool
-import com.raul.androidapps.cvapp.preferences.PreferencesManager
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

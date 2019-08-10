@@ -3,9 +3,8 @@ package com.raul.androidapps.cvapp.persistence.daos
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
-import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.persistence.entities.TaskEntity
-import com.raul.androidapps.cvapp.persistence.entities.UserInfoEntity
+
 
 
 @Dao
@@ -15,6 +14,6 @@ abstract class TaskDao : BaseDao<TaskEntity>() {
     abstract fun getListOfTasks(gistId: String, companyId: Int): LiveData<List<String>>
 
     @Query("DELETE FROM task_table WHERE gist_id LIKE :gistId AND company_id = :companyId AND position > :lastPosition")
-    abstract fun removeListOfTasks(gistId: String, companyId: Int, lastPosition: Int)
+    abstract suspend fun removeListOfTasks(gistId: String, companyId: Int, lastPosition: Int)
 
 }
