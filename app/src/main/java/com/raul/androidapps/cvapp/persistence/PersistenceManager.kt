@@ -1,8 +1,10 @@
 package com.raul.androidapps.cvapp.persistence
 
 import androidx.lifecycle.LiveData
+import com.raul.androidapps.cvapp.model.Expertise
 import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.persistence.entities.CompanyEntity
+import com.raul.androidapps.cvapp.persistence.relations.CompanyWithAllInfo
 
 interface PersistenceManager {
 
@@ -30,8 +32,8 @@ interface PersistenceManager {
 
     suspend fun removeListOfAchievements(gistId: String, companyId: Int, lastPosition: Int)
 
-    suspend fun getListOfCompanies(gistId: String): LiveData<List<CompanyEntity>>
+    suspend fun getListOfCompanies(gistId: String): LiveData<List<CompanyWithAllInfo>>
 
-    suspend fun insertListOfCompanies(companies: List<CompanyEntity>, gistId: String)
+    suspend fun insertListOfCompanies(companies: List<Expertise>, gistId: String)
 
 }

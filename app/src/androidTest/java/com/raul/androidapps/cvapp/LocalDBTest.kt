@@ -4,11 +4,12 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.raul.androidapps.cvapp.model.Expertise
 import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.persistence.PersistenceManager
 import com.raul.androidapps.cvapp.persistence.PersistenceManagerImpl
 import com.raul.androidapps.cvapp.persistence.databases.CVAppDatabase
-import com.raul.androidapps.cvapp.persistence.entities.CompanyEntity
+import com.raul.androidapps.cvapp.persistence.relations.CompanyWithAllInfo
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -103,7 +104,8 @@ class LocalDBTest {
 
             persistenceManager.insertListOfTasks(tasksCompany1, gist, companyId1)
             persistenceManager.insertListOfTasks(tasksCompany2, gist, companyId2)
-            val tasksStored: List<String> = persistenceManager.getListOfTasks(gist, companyId1).getItem()
+            val tasksStored: List<String> =
+                persistenceManager.getListOfTasks(gist, companyId1).getItem()
 
             assertEquals(tasksCompany1, tasksStored)
         }
@@ -125,7 +127,8 @@ class LocalDBTest {
 
             persistenceManager.removeListOfTasks(gist, companyId, updatedTasks.lastIndex)
 
-            val tasksStored: List<String> = persistenceManager.getListOfTasks(gist, companyId).getItem()
+            val tasksStored: List<String> =
+                persistenceManager.getListOfTasks(gist, companyId).getItem()
 
             assertEquals(updatedTasks, tasksStored)
         }
@@ -138,14 +141,23 @@ class LocalDBTest {
             val gist = "gist1"
             val companyId1 = 1
             val achievementsCompany1 =
-                listOf("achievement${companyId1}_1", "achievement${companyId1}_2", "achievement${companyId1}_3")
+                listOf(
+                    "achievement${companyId1}_1",
+                    "achievement${companyId1}_2",
+                    "achievement${companyId1}_3"
+                )
             val companyId2 = 2
             val achievementsCompany2 =
-                listOf("achievement${companyId2}_1", "achievement${companyId2}_2", "achievement${companyId2}_3")
+                listOf(
+                    "achievement${companyId2}_1",
+                    "achievement${companyId2}_2",
+                    "achievement${companyId2}_3"
+                )
 
             persistenceManager.insertListOfAchievements(achievementsCompany1, gist, companyId1)
             persistenceManager.insertListOfAchievements(achievementsCompany2, gist, companyId2)
-            val achievementsStored: List<String> = persistenceManager.getListOfAchievements(gist, companyId1).getItem()
+            val achievementsStored: List<String> =
+                persistenceManager.getListOfAchievements(gist, companyId1).getItem()
 
             assertEquals(achievementsCompany1, achievementsStored)
         }
@@ -165,15 +177,18 @@ class LocalDBTest {
 
             persistenceManager.insertListOfAchievements(updatedAchievements, gist, companyId)
 
-            persistenceManager.removeListOfAchievements(gist, companyId, updatedAchievements.lastIndex)
+            persistenceManager.removeListOfAchievements(
+                gist,
+                companyId,
+                updatedAchievements.lastIndex
+            )
 
-            val achievementsStored: List<String> = persistenceManager.getListOfAchievements(gist, companyId).getItem()
+            val achievementsStored: List<String> =
+                persistenceManager.getListOfAchievements(gist, companyId).getItem()
 
             assertEquals(updatedAchievements, achievementsStored)
         }
     }
-
-
 
     @Test
     @Throws(InterruptedException::class)
@@ -181,15 +196,53 @@ class LocalDBTest {
         runBlocking {
             val gist = "gist"
             val date = "date"
-            val company0 = CompanyEntity(gist, 0, "company0", date)
-            val company1 = CompanyEntity(gist, 1, "company1", date)
+            val company0 = Expertise(0, listOf(), listOf(), "company0", date)
+            val company1 = Expertise(1, listOf(), listOf(), "company1", date)
             persistenceManager.insertListOfCompanies(listOf(company1, company0, company1), gist)
 
-            val companiesStored: List<CompanyEntity> = persistenceManager.getListOfCompanies(gist).getItem()
+            val companiesStored: List<CompanyWithAllInfo> =
+                persistenceManager.getListOfCompanies(gist).getItem()
 
             assertEquals(companiesStored.size, 2)
-            assertEquals(companiesStored[0], company1)
-            assertEquals(companiesStored[1], company0)
+            assertEquals(companiesStored[0].company.name, company1.company)
+            assertEquals(companiesStored[1].company.name, company0.company)
+        }
+    }
+
+    @Test
+    @Throws(InterruptedException::class)
+    fun getCompanyWithAchievementsAndTasks() {
+        runBlocking {
+            val gist = "gist"
+            val date = "date"
+            val companyName = "company"
+            val companyId = 0
+
+            val tasksCompany =
+                listOf("task${companyId}_1", "task${companyId}_2", "task${companyId}_3")
+            val achievementsCompany =
+                listOf(
+                    "achievement${companyId}_1",
+                    "achievement${companyId}_2",
+                    "achievement${companyId}_3"
+                )
+            val company = Expertise(
+                id = companyId,
+                tasks = tasksCompany,
+                achievements = achievementsCompany,
+                company = companyName,
+                date = date
+            )
+            persistenceManager.insertListOfCompanies(listOf(company), gist)
+
+            val companiesStored: List<CompanyWithAllInfo> =
+                persistenceManager.getListOfCompanies(gist).getItem()
+
+            assertEquals(
+                companiesStored.first().achievements.map { it.achievement },
+                achievementsCompany
+            )
+            assertEquals(companiesStored.first().tasks.map { it.task }, tasksCompany)
         }
     }
 

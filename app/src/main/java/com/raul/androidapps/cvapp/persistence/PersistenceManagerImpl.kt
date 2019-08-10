@@ -1,12 +1,14 @@
 package com.raul.androidapps.cvapp.persistence
 
 import androidx.lifecycle.LiveData
+import com.raul.androidapps.cvapp.model.Expertise
 import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.persistence.databases.CVAppDatabase
 import com.raul.androidapps.cvapp.persistence.entities.AchievementEntity
 import com.raul.androidapps.cvapp.persistence.entities.CompanyEntity
 import com.raul.androidapps.cvapp.persistence.entities.TaskEntity
 import com.raul.androidapps.cvapp.persistence.entities.UserInfoEntity
+import com.raul.androidapps.cvapp.persistence.relations.CompanyWithAllInfo
 import javax.inject.Inject
 
 class PersistenceManagerImpl @Inject constructor(
@@ -27,9 +29,14 @@ class PersistenceManagerImpl @Inject constructor(
         tasks: List<String>,
         gistId: String,
         companyId: Int
-    ){
-        val listOfTasks = tasks.mapIndexed{ index, task->
-            TaskEntity.fromStringTask(task = task, companyId = companyId, gistId = gistId, position = index)
+    ) {
+        val listOfTasks = tasks.mapIndexed { index, task ->
+            TaskEntity.fromStringTask(
+                task = task,
+                companyId = companyId,
+                gistId = gistId,
+                position = index
+            )
         }
         db.taskDao().insert(listOfTasks)
     }
@@ -49,8 +56,13 @@ class PersistenceManagerImpl @Inject constructor(
         gistId: String,
         companyId: Int
     ) {
-        val listOfAchievements = achievements.mapIndexed{ index, achievement->
-            AchievementEntity.fromStringAchievement(achievement = achievement, companyId = companyId, gistId = gistId, position = index)
+        val listOfAchievements = achievements.mapIndexed { index, achievement ->
+            AchievementEntity.fromStringAchievement(
+                achievement = achievement,
+                companyId = companyId,
+                gistId = gistId,
+                position = index
+            )
         }
         db.achievementDao().insert(listOfAchievements)
     }
@@ -63,11 +75,19 @@ class PersistenceManagerImpl @Inject constructor(
         db.achievementDao().removeListOfAchievement(gistId, companyId, lastPosition)
     }
 
-    override suspend fun getListOfCompanies(gistId: String): LiveData<List<CompanyEntity>> =
+    override suspend fun getListOfCompanies(gistId: String): LiveData<List<CompanyWithAllInfo>> =
         db.companyDao().getListOfCompany(gistId)
 
-    override suspend fun insertListOfCompanies(companies: List<CompanyEntity>, gistId: String) {
-        db.companyDao().insert(companies)
+    override suspend fun insertListOfCompanies(companies: List<Expertise>, gistId: String) {
+        val listOfCompanies = companies.map {
+            CompanyEntity.fromExpertise(it, gistId)
+        }
+        db.companyDao().insert(listOfCompanies)
+        companies.forEach {
+            insertListOfTasks(it.tasks, gistId, it.id)
+            insertListOfAchievements(it.achievements, gistId, it.id)
+        }
+
     }
 }
 
