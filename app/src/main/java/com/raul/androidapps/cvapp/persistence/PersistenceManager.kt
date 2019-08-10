@@ -7,4 +7,6 @@ interface PersistenceManager {
 
     suspend fun getUserInfo(gistId: String): LiveData<Profile>
 
+    suspend fun insertUserInfo(profile: Profile, gistId: String)
+
 }
