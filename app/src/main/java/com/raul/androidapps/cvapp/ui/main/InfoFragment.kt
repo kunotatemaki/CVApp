@@ -10,23 +10,23 @@ import com.raul.androidapps.cvapp.R
 import com.raul.androidapps.cvapp.ui.common.BaseFragment
 import com.raul.androidapps.cvapp.databinding.MainFragmentBinding
 
-class MainFragment : BaseFragment() {
+class InfoFragment : BaseFragment() {
 
     private lateinit var binding: MainFragmentBinding
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: InfoViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.main_fragment, container, false, cvAppBindingComponent)
+        binding = DataBindingUtil.inflate(inflater, R.layout.info_fragment, container, false, cvAppBindingComponent)
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(InfoViewModel::class.java)
         // TODO: Use the ViewModel
     }
 

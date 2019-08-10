@@ -1,7 +1,7 @@
 package com.raul.androidapps.cvapp.di.modules
 
 import com.raul.androidapps.cvapp.di.interfaces.CustomScopes
-import com.raul.androidapps.cvapp.ui.main.MainFragment
+import com.raul.androidapps.cvapp.ui.main.InfoFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -13,6 +13,6 @@ abstract class FragmentsProvider {
 
     @CustomScopes.FragmentScope
     @ContributesAndroidInjector
-    abstract fun providesMainFragmentFactory(): MainFragment
+    abstract fun providesMainFragmentFactory(): InfoFragment
 
 }

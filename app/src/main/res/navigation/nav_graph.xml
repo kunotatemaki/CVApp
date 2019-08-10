@@ -3,10 +3,10 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/nav_graph"
-            app:startDestination="@id/template_fragment">
+            app:startDestination="@id/info_fragment">
 
-    <fragment android:id="@+id/template_fragment"
-              android:name="com.raul.androidapps.cvapp.ui.main.MainFragment"
-              android:label="template_fragment" tools:layout="@layout/main_fragment"/>
+    <fragment android:id="@+id/info_fragment"
+              android:name="com.raul.androidapps.cvapp.ui.main.InfoFragment"
+              android:label="template_fragment" tools:layout="@layout/info_fragment"/>
 
 </navigation>
