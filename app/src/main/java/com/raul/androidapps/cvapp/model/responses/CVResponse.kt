@@ -12,6 +12,8 @@ data class CVResponse constructor(
         @SerializedName("Education.json")
         val educationContent: EducationContent,
         @SerializedName("Profile.json")
-        val profileContent: ProfileContent
+        val profileContent: ProfileContent,
+        @SerializedName("Expertise.json")
+        val expertiseContent: ExpertiseContent
     )
 }

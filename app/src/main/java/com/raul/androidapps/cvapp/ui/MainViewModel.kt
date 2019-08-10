@@ -24,6 +24,7 @@ class MainViewModel @Inject constructor(
             val response = networkServiceFactory.getServiceInstance().getCVInfo(gistId)
             val profile = response.body()?.files?.profileContent?.toProfile()
             val listOfEducationItems = response.body()?.files?.educationContent?.toListOfEducationItems()
+            val listOfExpertiseItems = response.body()?.files?.expertiseContent?.toListOfExpertiseItems()
             Timber.d("")
         }
     }
