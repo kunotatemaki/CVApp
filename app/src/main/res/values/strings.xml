@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CV App</string>
+    <string name="menu_info">Info</string>
+    <string name="menu_expertise">Expertise</string>
+    <string name="menu_skills">Skills</string>
+    <string name="menu_formation">Education</string>
+    <string name="menu_miscellaneous">Diverse</string>
 </resources>
