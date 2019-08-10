@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.persistence.databases.CVAppDatabase
 import com.raul.androidapps.cvapp.persistence.entities.AchievementEntity
+import com.raul.androidapps.cvapp.persistence.entities.CompanyEntity
 import com.raul.androidapps.cvapp.persistence.entities.TaskEntity
 import com.raul.androidapps.cvapp.persistence.entities.UserInfoEntity
 import javax.inject.Inject
@@ -60,6 +61,13 @@ class PersistenceManagerImpl @Inject constructor(
         lastPosition: Int
     ) {
         db.achievementDao().removeListOfAchievement(gistId, companyId, lastPosition)
+    }
+
+    override suspend fun getListOfCompanies(gistId: String): LiveData<List<CompanyEntity>> =
+        db.companyDao().getListOfCompany(gistId)
+
+    override suspend fun insertListOfCompanies(companies: List<CompanyEntity>, gistId: String) {
+        db.companyDao().insert(companies)
     }
 }
 

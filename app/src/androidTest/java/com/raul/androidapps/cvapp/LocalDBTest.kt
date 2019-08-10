@@ -8,6 +8,7 @@ import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.persistence.PersistenceManager
 import com.raul.androidapps.cvapp.persistence.PersistenceManagerImpl
 import com.raul.androidapps.cvapp.persistence.databases.CVAppDatabase
+import com.raul.androidapps.cvapp.persistence.entities.CompanyEntity
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -169,6 +170,25 @@ class LocalDBTest {
             val achievementsStored: List<String> = persistenceManager.getListOfAchievements(gist, companyId).getItem()
 
             assertEquals(updatedAchievements, achievementsStored)
+        }
+    }
+
+
+
+    @Test
+    @Throws(InterruptedException::class)
+    fun getListOfCompaniesOrdered() {
+        runBlocking {
+            val gist = "gist"
+            val company0 = CompanyEntity(gist, 0, "company0")
+            val company1 = CompanyEntity(gist, 1, "company1")
+            persistenceManager.insertListOfCompanies(listOf(company1, company0, company1), gist)
+
+            val companiesStored: List<CompanyEntity> = persistenceManager.getListOfCompanies(gist).getItem()
+
+            assertEquals(companiesStored.size, 2)
+            assertEquals(companiesStored[0], company1)
+            assertEquals(companiesStored[1], company0)
         }
     }
 
