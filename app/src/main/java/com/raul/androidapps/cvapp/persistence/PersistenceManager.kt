@@ -1,9 +1,10 @@
 package com.raul.androidapps.cvapp.persistence
 
-import com.raul.androidapps.cvapp.persistence.entities.FooEntity
+import androidx.lifecycle.LiveData
+import com.raul.androidapps.cvapp.model.Profile
 
 interface PersistenceManager {
 
-    suspend fun getFoo(name: String): List<FooEntity>
+    suspend fun getUserInfo(gistId: String): LiveData<Profile>
 
 }

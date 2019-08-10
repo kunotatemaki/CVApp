@@ -94,9 +94,12 @@ dependencies {
 
     //Db and pagination
     def roomVersion = '2.1.0'
+    def version_arch_core = '2.0.1'
     implementation "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
+    androidTestImplementation "androidx.room:room-testing:$roomVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$version_arch_core"
 
     def lifecycleVersion = '2.0.0'
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
