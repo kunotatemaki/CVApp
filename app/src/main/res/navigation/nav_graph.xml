@@ -6,7 +6,7 @@
             app:startDestination="@id/info_fragment">
 
     <fragment android:id="@+id/info_fragment"
-              android:name="com.raul.androidapps.cvapp.ui.main.InfoFragment"
+              android:name="com.raul.androidapps.cvapp.ui.info.InfoFragment"
               android:label="template_fragment" tools:layout="@layout/info_fragment"/>
 
 </navigation>

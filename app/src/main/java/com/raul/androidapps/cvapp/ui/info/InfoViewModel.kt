@@ -1,4 +1,4 @@
-package com.raul.androidapps.cvapp.ui.main
+package com.raul.androidapps.cvapp.ui.info
 
 import androidx.lifecycle.AndroidViewModel
 import com.raul.androidapps.cvapp.CVAppApplication

@@ -1,4 +1,4 @@
-package com.raul.androidapps.cvapp.ui.main
+package com.raul.androidapps.cvapp.ui.info
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.raul.androidapps.cvapp.R
+import com.raul.androidapps.cvapp.databinding.InfoFragmentBinding
 import com.raul.androidapps.cvapp.ui.common.BaseFragment
-import com.raul.androidapps.cvapp.databinding.MainFragmentBinding
 
 class InfoFragment : BaseFragment() {
 
-    private lateinit var binding: MainFragmentBinding
+    private lateinit var binding: InfoFragmentBinding
 
     private lateinit var viewModel: InfoViewModel
 
@@ -20,7 +20,13 @@ class InfoFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.info_fragment, container, false, cvAppBindingComponent)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.info_fragment,
+            container,
+            false,
+            cvAppBindingComponent
+        )
         return binding.root
     }
 

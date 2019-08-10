@@ -1,7 +1,7 @@
 package com.raul.androidapps.cvapp.di.modules
 
 import com.raul.androidapps.cvapp.di.interfaces.CustomScopes
-import com.raul.androidapps.cvapp.ui.main.InfoFragment
+import com.raul.androidapps.cvapp.ui.info.InfoFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
