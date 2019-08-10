@@ -16,11 +16,13 @@ class MainViewModel @Inject constructor(
 ): ViewModel() {
 
     init {
+        //todo remove this
         fetchCVInfoAsync(BuildConfig.CV_GIST_ID)
     }
 
     fun fetchCVInfoAsync(gistId: String){
         GlobalScope.launch {
+            //todo create viemodel scope
             val response = networkServiceFactory.getServiceInstance().getCVInfo(gistId)
             val profile = response.body()?.files?.profileContent?.toProfile()
             val listOfEducationItems = response.body()?.files?.educationContent?.toListOfEducationItems()
