@@ -2,15 +2,14 @@ package com.raul.androidapps.cvapp.network
 
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.Header
 import java.util.*
 
 interface CVAppApi {
 
-    @GET("url")
+    @GET("gist/{gist_id}")
     suspend fun foo(
-        @Query("param1") param1: Long,
-        @Query("param2") string: String
+        @Header("gist_id") gistId: String
     ): Response<Objects>
 
 
