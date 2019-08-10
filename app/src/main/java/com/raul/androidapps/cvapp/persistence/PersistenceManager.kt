@@ -9,8 +9,24 @@ interface PersistenceManager {
 
     suspend fun insertUserInfo(profile: Profile, gistId: String)
 
-    suspend fun getListOfTasks(gistId: String): LiveData<List<String>>
+    suspend fun getListOfTasks(gistId: String, companyId: Int): LiveData<List<String>>
 
-    suspend fun removeListOfTasks(gistId: String, lastPosition: Int)
+    suspend fun insertListOfTasks(
+        tasks: List<String>,
+        gistId: String,
+        companyId: Int
+    )
+
+    suspend fun removeListOfTasks(gistId: String, companyId: Int, lastPosition: Int)
+
+    suspend fun getListOfAchievements(gistId: String, companyId: Int): LiveData<List<String>>
+
+    suspend fun insertListOfAchievements(
+        achievements: List<String>,
+        gistId: String,
+        companyId: Int
+    )
+
+    suspend fun removeListOfAchievements(gistId: String, companyId: Int, lastPosition: Int)
 
 }

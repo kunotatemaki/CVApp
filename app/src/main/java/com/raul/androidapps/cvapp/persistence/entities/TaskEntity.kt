@@ -13,6 +13,8 @@ data class TaskEntity constructor(
     val taskId: String,
     @ColumnInfo(name = "gist_id")
     var gistId: String,
+    @ColumnInfo(name = "company_id")
+    var companyId: Int,
     @ColumnInfo(name = "position")
     var position: Int,
     @ColumnInfo(name = "task")
@@ -22,13 +24,16 @@ data class TaskEntity constructor(
 
     companion object {
 
-        fun fromStringTask(task: String, gistId: String, position: Int): TaskEntity =
+        fun fromStringTask(task: String, gistId: String, companyId: Int, position: Int): TaskEntity =
             TaskEntity(
-                taskId = "${gistId}_$position",
+                taskId = getTaskId(gistId, companyId, position),
                 gistId = gistId,
+                companyId = companyId,
                 position = position,
                 task = task
             )
+
+        fun getTaskId(gistId: String, companyId: Int, position: Int): String = "${gistId}_${companyId}_$position"
 
     }
 }

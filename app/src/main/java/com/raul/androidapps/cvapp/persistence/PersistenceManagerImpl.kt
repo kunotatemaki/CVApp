@@ -3,6 +3,8 @@ package com.raul.androidapps.cvapp.persistence
 import androidx.lifecycle.LiveData
 import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.persistence.databases.CVAppDatabase
+import com.raul.androidapps.cvapp.persistence.entities.AchievementEntity
+import com.raul.androidapps.cvapp.persistence.entities.TaskEntity
 import com.raul.androidapps.cvapp.persistence.entities.UserInfoEntity
 import javax.inject.Inject
 
@@ -17,11 +19,47 @@ class PersistenceManagerImpl @Inject constructor(
         db.userInfoDao().insert(UserInfoEntity.fromProfile(profile, gistId))
     }
 
-    override suspend fun getListOfTasks(gistId: String): LiveData<List<String>> =
-        db.taskDao().getListOfTasks(gistId)
+    override suspend fun getListOfTasks(gistId: String, companyId: Int): LiveData<List<String>> =
+        db.taskDao().getListOfTasks(gistId, companyId)
 
-    override suspend fun removeListOfTasks(gistId: String, lastPosition: Int) {
-        db.taskDao().removeListOfTasks(gistId, lastPosition)
+    override suspend fun insertListOfTasks(
+        tasks: List<String>,
+        gistId: String,
+        companyId: Int
+    ){
+        val listOfTasks = tasks.mapIndexed{ index, task->
+            TaskEntity.fromStringTask(task = task, companyId = companyId, gistId = gistId, position = index)
+        }
+        db.taskDao().insert(listOfTasks)
+    }
+
+    override suspend fun removeListOfTasks(gistId: String, companyId: Int, lastPosition: Int) {
+        db.taskDao().removeListOfTasks(gistId, companyId, lastPosition)
+    }
+
+    override suspend fun getListOfAchievements(
+        gistId: String,
+        companyId: Int
+    ): LiveData<List<String>> =
+        db.achievementDao().getListOfAchievements(gistId, companyId)
+
+    override suspend fun insertListOfAchievements(
+        achievements: List<String>,
+        gistId: String,
+        companyId: Int
+    ) {
+        val listOfAchievements = achievements.mapIndexed{ index, achievement->
+            AchievementEntity.fromStringAchievement(achievement = achievement, companyId = companyId, gistId = gistId, position = index)
+        }
+        db.achievementDao().insert(listOfAchievements)
+    }
+
+    override suspend fun removeListOfAchievements(
+        gistId: String,
+        companyId: Int,
+        lastPosition: Int
+    ) {
+        db.achievementDao().removeListOfAchievement(gistId, companyId, lastPosition)
     }
 }
 

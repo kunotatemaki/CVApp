@@ -5,14 +5,13 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.raul.androidapps.cvapp.model.Profile
-import com.raul.androidapps.cvapp.persistence.daos.TaskDao
-import com.raul.androidapps.cvapp.persistence.daos.UserInfoDao
+import com.raul.androidapps.cvapp.persistence.PersistenceManager
+import com.raul.androidapps.cvapp.persistence.PersistenceManagerImpl
 import com.raul.androidapps.cvapp.persistence.databases.CVAppDatabase
-import com.raul.androidapps.cvapp.persistence.entities.TaskEntity
-import com.raul.androidapps.cvapp.persistence.entities.UserInfoEntity
 import kotlinx.coroutines.runBlocking
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -25,8 +24,7 @@ class LocalDBTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var database: CVAppDatabase
-    private lateinit var userInfoDao: UserInfoDao
-    private lateinit var taskDao: TaskDao
+    private lateinit var persistenceManager: PersistenceManager
 
     @Before
     @Throws(Exception::class)
@@ -38,8 +36,8 @@ class LocalDBTest {
             CVAppDatabase::class.java
         ).allowMainThreadQueries().build() // allowing main thread queries, just for testing
 
-        userInfoDao = database.userInfoDao()
-        taskDao = database.taskDao()
+        persistenceManager = PersistenceManagerImpl(database)
+
     }
 
     @After
@@ -53,7 +51,7 @@ class LocalDBTest {
     @Throws(InterruptedException::class)
     fun getUserInfoNull() {
         runBlocking {
-            val info = userInfoDao.getUserInfo("").getItem()
+            val info = persistenceManager.getUserInfo("").getItem()
             assertNull(info)
         }
     }
@@ -70,7 +68,7 @@ class LocalDBTest {
                 phone = "phone1",
                 name = "name1",
                 description = "description1"
-                )
+            )
             val gist2 = "gist2"
             val userInfo2 = Profile(
                 github = "github2",
@@ -79,12 +77,12 @@ class LocalDBTest {
                 phone = "phone2",
                 name = "name2",
                 description = "description2"
-                )
-            val userEntity1 = UserInfoEntity.fromProfile(profile = userInfo1, gistId = gist1)
-            val userEntity2 = UserInfoEntity.fromProfile(profile = userInfo2, gistId = gist2)
-            userInfoDao.insert(listOf(userEntity1, userEntity2))
-            val userStored1 = userInfoDao.getUserInfo(gist1).getItem()
-            val userStored2 = userInfoDao.getUserInfo(gist2).getItem()
+            )
+            persistenceManager.insertUserInfo(userInfo1, gist1)
+            persistenceManager.insertUserInfo(userInfo2, gist2)
+
+            val userStored1 = persistenceManager.getUserInfo(gist1).getItem()
+            val userStored2 = persistenceManager.getUserInfo(gist2).getItem()
             assertEquals(userStored1, userInfo1)
             assertEquals(userStored2, userInfo2)
         }
@@ -92,18 +90,21 @@ class LocalDBTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun getListOfTasksOrdered() {
+    fun getListOfTasksForOneCompanyOrdered() {
         runBlocking {
-            val gist = "gist"
-            val tasks = listOf("task1", "task2", "task3")
-            val entities: List<TaskEntity> = tasks.mapIndexed { index, task ->
-                TaskEntity.fromStringTask(task = task, gistId = gist, position = index)
-            }
+            val gist = "gist1"
+            val companyId1 = 1
+            val tasksCompany1 =
+                listOf("task${companyId1}_1", "task${companyId1}_2", "task${companyId1}_3")
+            val companyId2 = 2
+            val tasksCompany2 =
+                listOf("task${companyId2}_1", "task${companyId2}_2", "task${companyId2}_3")
 
-            taskDao.insert(entities)
-            val tasksStored: List<String> = taskDao.getListOfTasks(gist).getItem()
+            persistenceManager.insertListOfTasks(tasksCompany1, gist, companyId1)
+            persistenceManager.insertListOfTasks(tasksCompany2, gist, companyId2)
+            val tasksStored: List<String> = persistenceManager.getListOfTasks(gist, companyId1).getItem()
 
-            assertEquals(tasks, tasksStored)
+            assertEquals(tasksCompany1, tasksStored)
         }
     }
 
@@ -112,28 +113,64 @@ class LocalDBTest {
     fun removeExtraTasks() {
         runBlocking {
             val gist = "gist"
+            val companyId = 1
             val initialTasks = listOf("task1", "task2", "task3")
-            val initialEntities: List<TaskEntity> = initialTasks.mapIndexed { index, task ->
-                TaskEntity.fromStringTask(task = task, gistId = gist, position = index)
-            }
 
-            taskDao.insert(initialEntities)
+            persistenceManager.insertListOfTasks(initialTasks, gist, companyId)
 
             val updatedTasks = listOf("updatedTask1", "updatedTask2")
-            val updatedEntities: List<TaskEntity> = updatedTasks.mapIndexed { index, task ->
-                TaskEntity.fromStringTask(task = task, gistId = gist, position = index)
-            }
 
-            taskDao.insert(updatedEntities)
+            persistenceManager.insertListOfTasks(updatedTasks, gist, companyId)
 
-            taskDao.removeListOfTasks(gist, updatedEntities.lastIndex)
+            persistenceManager.removeListOfTasks(gist, companyId, updatedTasks.lastIndex)
 
-            val tasksStored: List<String> = taskDao.getListOfTasks(gist).getItem()
+            val tasksStored: List<String> = persistenceManager.getListOfTasks(gist, companyId).getItem()
 
             assertEquals(updatedTasks, tasksStored)
         }
     }
 
+    @Test
+    @Throws(InterruptedException::class)
+    fun getListOfAchievementsForOneCompanyOrdered() {
+        runBlocking {
+            val gist = "gist1"
+            val companyId1 = 1
+            val achievementsCompany1 =
+                listOf("achievement${companyId1}_1", "achievement${companyId1}_2", "achievement${companyId1}_3")
+            val companyId2 = 2
+            val achievementsCompany2 =
+                listOf("achievement${companyId2}_1", "achievement${companyId2}_2", "achievement${companyId2}_3")
+
+            persistenceManager.insertListOfAchievements(achievementsCompany1, gist, companyId1)
+            persistenceManager.insertListOfAchievements(achievementsCompany2, gist, companyId2)
+            val achievementsStored: List<String> = persistenceManager.getListOfAchievements(gist, companyId1).getItem()
+
+            assertEquals(achievementsCompany1, achievementsStored)
+        }
+    }
+
+    @Test
+    @Throws(InterruptedException::class)
+    fun removeExtraAchievements() {
+        runBlocking {
+            val gist = "gist"
+            val companyId = 1
+            val initialAchievements = listOf("achievement1", "achievement2", "achievement3")
+
+            persistenceManager.insertListOfAchievements(initialAchievements, gist, companyId)
+
+            val updatedAchievements = listOf("updatedAchievement1", "updatedAchievement2")
+
+            persistenceManager.insertListOfAchievements(updatedAchievements, gist, companyId)
+
+            persistenceManager.removeListOfAchievements(gist, companyId, updatedAchievements.lastIndex)
+
+            val achievementsStored: List<String> = persistenceManager.getListOfAchievements(gist, companyId).getItem()
+
+            assertEquals(updatedAchievements, achievementsStored)
+        }
+    }
 
 
 }

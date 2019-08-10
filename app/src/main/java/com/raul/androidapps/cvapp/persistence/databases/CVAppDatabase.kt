@@ -5,18 +5,22 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.raul.androidapps.cvapp.persistence.daos.AchievementDao
 import com.raul.androidapps.cvapp.persistence.daos.TaskDao
 import com.raul.androidapps.cvapp.persistence.daos.UserInfoDao
+import com.raul.androidapps.cvapp.persistence.entities.AchievementEntity
 import com.raul.androidapps.cvapp.persistence.entities.TaskEntity
 import com.raul.androidapps.cvapp.persistence.entities.UserInfoEntity
 import com.raul.androidapps.cvapp.persistence.utils.DbConverters
 import com.raul.androidapps.cvapp.persistence.utils.PersistenceConstants
 
-@Database(entities = [(UserInfoEntity::class), (TaskEntity::class)], exportSchema = false, version = 1)
+@Database(entities = [(UserInfoEntity::class), (TaskEntity::class),
+    (AchievementEntity::class)], exportSchema = false, version = 1)
 @TypeConverters(DbConverters::class)
 abstract class CVAppDatabase : RoomDatabase() {
     abstract fun userInfoDao(): UserInfoDao
     abstract fun taskDao(): TaskDao
+    abstract fun achievementDao(): AchievementDao
 
     companion object {
 
