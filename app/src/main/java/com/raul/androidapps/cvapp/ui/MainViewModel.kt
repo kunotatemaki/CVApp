@@ -27,6 +27,7 @@ class MainViewModel @Inject constructor(
             val profile = response.body()?.files?.profileContent?.toProfile()
             val listOfEducationItems = response.body()?.files?.educationContent?.toListOfEducationItems()
             val listOfExpertiseItems = response.body()?.files?.expertiseContent?.toListOfExpertiseItems()
+            val skills = response.body()?.files?.skillContent?.toListOfSkillItems()
             Timber.d("")
         }
     }

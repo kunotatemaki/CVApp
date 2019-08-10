@@ -278,4 +278,44 @@ class LocalDBTest {
     }
 
 
+    @Test
+    @Throws(InterruptedException::class)
+    fun getSkillsForOneUserOrdered() {
+        runBlocking {
+            val gist1 = "gist1"
+            val gist2 = "gist2"
+            val skillUser1 =
+                listOf("skill_${gist1}_1", "skill_${gist1}_2", "skill_${gist1}_3")
+            val skillUser2 =
+                listOf("skill_${gist2}_1", "skill_${gist2}_2", "skill_${gist2}_3")
+
+            persistenceManager.insertListOfSkills(skillUser1, gist1)
+            persistenceManager.insertListOfSkills(skillUser2, gist2)
+            val skillsStored: List<String> =
+                persistenceManager.getListOfSkills(gist1).getItem()
+
+            assertEquals(skillsStored, skillUser1.asReversed())
+        }
+    }
+
+    @Test
+    @Throws(InterruptedException::class)
+    fun removeExtraSkills() {
+        runBlocking {
+            val gist = "gist"
+            val initialUser1 =
+                listOf("skill_${gist}_1", "skill_${gist}_2", "skill_${gist}_3")
+            val initialUser2 =
+                listOf("skill_${gist}_4", "skill_${gist}_5")
+            persistenceManager.insertListOfSkills(initialUser1, gist)
+            persistenceManager.insertListOfSkills(initialUser2, gist)
+
+            val skillStored: List<String> =
+                persistenceManager.getListOfSkills(gist).getItem()
+
+            assertEquals(initialUser2.asReversed(), skillStored)
+        }
+    }
+
+
 }

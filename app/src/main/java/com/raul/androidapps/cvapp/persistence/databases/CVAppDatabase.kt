@@ -12,14 +12,15 @@ import com.raul.androidapps.cvapp.persistence.utils.PersistenceConstants
 
 @Database(entities = [(UserInfoEntity::class), (TaskEntity::class),
     (AchievementEntity::class), (CompanyEntity::class),
-    (EducationEntity::class)], exportSchema = false, version = 1)
+    (EducationEntity::class), (SkillsEntity::class)], exportSchema = false, version = 1)
 @TypeConverters(DbConverters::class)
 abstract class CVAppDatabase : RoomDatabase() {
     abstract fun userInfoDao(): UserInfoDao
     abstract fun taskDao(): TaskDao
     abstract fun achievementDao(): AchievementDao
     abstract fun companyDao(): CompanyDao
-    abstract fun eduationDao(): EducationDao
+    abstract fun educationDao(): EducationDao
+    abstract fun skillDao(): SkillDao
 
     companion object {
 

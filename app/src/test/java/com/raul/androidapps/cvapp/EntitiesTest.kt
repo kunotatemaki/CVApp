@@ -5,7 +5,6 @@ import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.persistence.entities.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.nio.file.attribute.PosixFileAttributeView
 
 
 class EntitiesTest {
@@ -111,6 +110,19 @@ class EntitiesTest {
 
         assertEquals(entity.position, position)
         assertEquals(entity.description, education)
+        assertEquals(entity.gistId, gist)
+    }
+
+    @Test
+    fun entityFromSkill() {
+        val gist = "gist"
+        val skill = "Android"
+        val position = 0
+
+        val entity = SkillsEntity.fromSkill(skill = skill, position = position, gistId = gist)
+
+        assertEquals(entity.position, position)
+        assertEquals(entity.description, skill)
         assertEquals(entity.gistId, gist)
     }
 

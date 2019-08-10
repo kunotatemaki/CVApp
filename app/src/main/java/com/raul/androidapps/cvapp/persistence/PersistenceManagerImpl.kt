@@ -12,14 +12,14 @@ class PersistenceManagerImpl @Inject constructor(
     private val db: CVAppDatabase
 ) : PersistenceManager {
 
-    override suspend fun getUserInfo(gistId: String): LiveData<Profile> =
+    override fun getUserInfo(gistId: String): LiveData<Profile> =
         db.userInfoDao().getUserInfo(gistId)
 
     override suspend fun insertUserInfo(profile: Profile, gistId: String) {
         db.userInfoDao().insert(UserInfoEntity.fromProfile(profile, gistId))
     }
 
-    override suspend fun getListOfTasks(gistId: String, companyId: Int): LiveData<List<String>> =
+    override fun getListOfTasks(gistId: String, companyId: Int): LiveData<List<String>> =
         db.taskDao().getListOfTasks(gistId, companyId)
 
     override suspend fun insertListOfTasks(
@@ -43,7 +43,7 @@ class PersistenceManagerImpl @Inject constructor(
         db.taskDao().removeListOfTasks(gistId, companyId, lastPosition)
     }
 
-    override suspend fun getListOfAchievements(
+    override fun getListOfAchievements(
         gistId: String,
         companyId: Int
     ): LiveData<List<String>> =
@@ -74,7 +74,7 @@ class PersistenceManagerImpl @Inject constructor(
         db.achievementDao().removeListOfAchievement(gistId, companyId, lastPosition)
     }
 
-    override suspend fun getListOfCompanies(gistId: String): LiveData<List<CompanyWithAllInfo>> =
+    override fun getListOfCompanies(gistId: String): LiveData<List<CompanyWithAllInfo>> =
         db.companyDao().getListOfCompany(gistId)
 
     override suspend fun insertListOfCompanies(companies: List<Expertise>, gistId: String) {
@@ -88,8 +88,8 @@ class PersistenceManagerImpl @Inject constructor(
         }
     }
 
-    override suspend fun getEducation(gistId: String): LiveData<List<String>> =
-        db.eduationDao().getEducation(gistId)
+    override fun getEducation(gistId: String): LiveData<List<String>> =
+        db.educationDao().getEducation(gistId)
 
     override suspend fun insertEducation(educationList: List<String>, gistId: String) {
         val educationEntities = educationList.mapIndexed { index, education ->
@@ -99,12 +99,31 @@ class PersistenceManagerImpl @Inject constructor(
                 education = education
             )
         }
-        db.eduationDao().insert(educationEntities)
+        db.educationDao().insert(educationEntities)
         removeOutdatedEducation(gistId, educationList.lastIndex)
     }
 
     private suspend fun removeOutdatedEducation(gistId: String, lastPosition: Int) {
-        db.eduationDao().removeOutdatedEducation(gistId, lastPosition)
+        db.educationDao().removeOutdatedEducation(gistId, lastPosition)
+    }
+
+    override fun getListOfSkills(gistId: String): LiveData<List<String>> =
+        db.skillDao().getListOfSkills(gistId)
+
+    override suspend fun insertListOfSkills(skillList: List<String>, gistId: String) {
+        val skillEntities = skillList.mapIndexed { index, skill ->
+            SkillsEntity.fromSkill(
+                gistId = gistId,
+                position = index,
+                skill = skill
+            )
+        }
+        db.skillDao().insert(skillEntities)
+        removeOutdatedSkills(gistId, skillList.lastIndex)
+    }
+
+    private suspend fun removeOutdatedSkills(gistId: String, lastPosition: Int) {
+        db.skillDao().removeOutdatedSkills(gistId, lastPosition)
     }
 }
 
