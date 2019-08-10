@@ -26,15 +26,6 @@ data class UserInfoEntity constructor(
     var description: String
 ){
 
-    fun toProfile(): Profile =
-        Profile(
-            name = this.name,
-            phone = this.phone,
-            linkedin = this.linkedin,
-            github = this.github,
-            email = this.email,
-            description = this.description
-        )
     companion object{
 
         fun fromProfile(profile: Profile, gistId: String): UserInfoEntity =

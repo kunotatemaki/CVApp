@@ -1,6 +1,7 @@
 package com.raul.androidapps.cvapp
 
 import com.raul.androidapps.cvapp.model.Profile
+import com.raul.androidapps.cvapp.persistence.entities.TaskEntity
 import com.raul.androidapps.cvapp.persistence.entities.UserInfoEntity
 import org.junit.Test
 
@@ -8,6 +9,7 @@ import org.junit.Assert.*
 
 
 class EntitiesTest {
+
     @Test
     fun entityFromProfile() {
         val gist = "gist"
@@ -26,4 +28,14 @@ class EntitiesTest {
         assertEquals(profile.linkedin, entity.linkedin)
         assertEquals(profile.name, entity.name)
     }
+
+    @Test
+    fun entityFromTask() {
+        val gist = "gist"
+        val task = "task"
+
+        val entity = TaskEntity.fromStringTask(gistId = gist, task = task, position = 0)
+        assertEquals(entity.task, task)
+    }
+
 }

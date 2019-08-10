@@ -9,4 +9,8 @@ interface PersistenceManager {
 
     suspend fun insertUserInfo(profile: Profile, gistId: String)
 
+    suspend fun getListOfTasks(gistId: String): LiveData<List<String>>
+
+    suspend fun removeListOfTasks(gistId: String, lastPosition: Int)
+
 }
