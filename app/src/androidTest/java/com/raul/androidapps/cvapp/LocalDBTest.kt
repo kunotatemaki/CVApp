@@ -180,8 +180,9 @@ class LocalDBTest {
     fun getListOfCompaniesOrdered() {
         runBlocking {
             val gist = "gist"
-            val company0 = CompanyEntity(gist, 0, "company0")
-            val company1 = CompanyEntity(gist, 1, "company1")
+            val date = "date"
+            val company0 = CompanyEntity(gist, 0, "company0", date)
+            val company1 = CompanyEntity(gist, 1, "company1", date)
             persistenceManager.insertListOfCompanies(listOf(company1, company0, company1), gist)
 
             val companiesStored: List<CompanyEntity> = persistenceManager.getListOfCompanies(gist).getItem()
