@@ -6,6 +6,14 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
 
+
+def getGistKey = { ->
+    if (!project.hasProperty('CV_GIST_ID')) {
+        ant.fail('var CV_GIST_ID has to be defined in gradle.properties')
+    }
+    return CV_GIST_ID
+}
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -15,6 +23,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'CV_GIST_ID', "\"${getGistKey()}\""
     }
     buildTypes {
         release {
