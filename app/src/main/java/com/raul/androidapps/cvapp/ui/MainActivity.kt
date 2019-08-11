@@ -18,6 +18,7 @@ import com.raul.androidapps.cvapp.resources.ResourcesManagerImpl
 import com.raul.androidapps.cvapp.ui.common.CVAppViewModelFactory
 import com.raul.androidapps.cvapp.utils.ViewUtils
 import dagger.android.support.DaggerAppCompatActivity
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.abs
 
@@ -49,11 +50,16 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
         binding.appbarLayoutMainActivity.addOnOffsetChangedListener(this)
 
         val navController = findNavController(this, R.id.fragment_container)
-        binding.bottomNavigation.setupWithNavController(navController)
         setToolbar(binding.toolbarMainActivity)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             updateStatusBar(resourcesManager.getColor(android.R.color.white))
         }
+
+        binding.bottomNavigation.setOnNavigationItemSelectedListener {
+            binding.appbarLayoutMainActivity.setExpanded(it.itemId == R.id.info_fragment)
+            true
+        }
+        binding.bottomNavigation.setupWithNavController(navController)
 
         viewModel.getProfile().observe({ lifecycle }) {
             it?.let {
