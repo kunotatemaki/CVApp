@@ -5,4 +5,6 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorTitle">#D81B60</color>
     <color name="colorDot">#D81B60</color>
+
+    <color name="dialogButton">#7800ff</color>
 </resources>
