@@ -1,27 +1,33 @@
 package com.raul.androidapps.cvapp.ui.education
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import com.raul.androidapps.cvapp.R
+import com.raul.androidapps.cvapp.databinding.EducationFragmentBinding
+import com.raul.androidapps.cvapp.ui.common.BaseFragment
 
-class EducationFragment : Fragment() {
+class EducationFragment : BaseFragment() {
 
-    companion object {
-        fun newInstance() = EducationFragment()
-    }
 
+    private lateinit var binding: EducationFragmentBinding
     private lateinit var viewModel: EducationViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.education_fragment, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.education_fragment,
+            container,
+            false,
+            cvAppBindingComponent
+        )
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

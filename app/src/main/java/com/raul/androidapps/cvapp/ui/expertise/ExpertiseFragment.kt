@@ -1,27 +1,33 @@
 package com.raul.androidapps.cvapp.ui.expertise
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import com.raul.androidapps.cvapp.R
+import com.raul.androidapps.cvapp.databinding.ExpertiseFragmentBinding
+import com.raul.androidapps.cvapp.ui.common.BaseFragment
 
-class ExpertiseFragment : Fragment() {
+class ExpertiseFragment : BaseFragment() {
 
-    companion object {
-        fun newInstance() = ExpertiseFragment()
-    }
 
+    private lateinit var binding: ExpertiseFragmentBinding
     private lateinit var viewModel: ExpertiseViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.expertise_fragment, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.expertise_fragment,
+            container,
+            false,
+            cvAppBindingComponent
+        )
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

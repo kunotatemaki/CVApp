@@ -1,9 +1,8 @@
 package com.raul.androidapps.cvapp.ui.info
 
-import androidx.lifecycle.AndroidViewModel
-import com.raul.androidapps.cvapp.CVAppApplication
+import androidx.lifecycle.ViewModel
 import javax.inject.Inject
 
-class InfoViewModel @Inject constructor(app: CVAppApplication) : AndroidViewModel(app) {
+class InfoViewModel @Inject constructor() : ViewModel() {
     // TODO: Implement the ViewModel
 }
