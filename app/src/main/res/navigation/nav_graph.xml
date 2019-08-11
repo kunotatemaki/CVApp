@@ -9,4 +9,10 @@
               android:name="com.raul.androidapps.cvapp.ui.info.InfoFragment"
               android:label="template_fragment" tools:layout="@layout/info_fragment"/>
 
+    <fragment
+            android:id="@+id/expertise_fragment"
+            android:name="com.raul.androidapps.cvapp.ui.expertise.ExpertiseFragment"
+            android:label="expertise_fragment"
+            tools:layout="@layout/expertise_fragment" />
+
 </navigation>

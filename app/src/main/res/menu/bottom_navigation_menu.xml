@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_info"
+        android:id="@+id/info_fragment"
         android:icon="@drawable/ic_account_circle_black_24dp"
         android:title="@string/menu_info"/>
     <item
-        android:id="@+id/menu_expertise"
+        android:id="@+id/expertise_fragment"
         android:icon="@drawable/expertise"
         android:title="@string/menu_expertise"/>
     <item
