@@ -1,6 +1,7 @@
 package com.raul.androidapps.cvapp
 
 import com.raul.androidapps.cvapp.model.Expertise
+import com.raul.androidapps.cvapp.model.Miscellaneous
 import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.persistence.entities.*
 import org.junit.Assert.assertEquals
@@ -106,7 +107,8 @@ class EntitiesTest {
         val education = "university"
         val position = 0
 
-        val entity = EducationEntity.fromEducation(education = education, position = position, gistId = gist)
+        val entity =
+            EducationEntity.fromEducation(education = education, position = position, gistId = gist)
 
         assertEquals(entity.position, position)
         assertEquals(entity.description, education)
@@ -124,6 +126,48 @@ class EntitiesTest {
         assertEquals(entity.position, position)
         assertEquals(entity.description, skill)
         assertEquals(entity.gistId, gist)
+    }
+
+    @Test
+    fun entityFromMiscellaneous() {
+        val gist = "gist"
+        val title = "languages"
+        val position = 0
+        val id = 1
+
+        val miscellaneous = Miscellaneous(
+            id = id,
+            title = title,
+            value = listOf()
+        )
+        val entity = MiscellaneousEntity.fromMiscellaneous(
+            miscellaneous = miscellaneous,
+            position = position,
+            gistId = gist
+        )
+
+        assertEquals(entity.position, position)
+        assertEquals(entity.title, title)
+        assertEquals(entity.gistId, gist)
+        assertEquals(entity.miscellaneousId, MiscellaneousEntity.getMiscellaneusId(gist, id))
+    }
+
+    @Test
+    fun entityFromMiscellaneousValue() {
+        val miscellaneousId = "miscellaneousId"
+        val position = 0
+
+        val miscellaneous = "Spanish"
+        val entity = MiscellaneousValueEntity.fromMiscellaneous(
+            value = miscellaneous,
+            position = position,
+            parentId = miscellaneousId
+        )
+
+        assertEquals(entity.position, position)
+        assertEquals(entity.value, miscellaneous)
+        assertEquals(entity.parentId, miscellaneousId)
+        assertEquals(entity.miscellaneousValueId, MiscellaneousValueEntity.getMiscellaneousValueId(miscellaneousId, position))
     }
 
 }

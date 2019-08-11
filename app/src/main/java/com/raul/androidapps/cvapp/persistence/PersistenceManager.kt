@@ -2,8 +2,10 @@ package com.raul.androidapps.cvapp.persistence
 
 import androidx.lifecycle.LiveData
 import com.raul.androidapps.cvapp.model.Expertise
+import com.raul.androidapps.cvapp.model.Miscellaneous
 import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.persistence.relations.CompanyWithAllInfo
+import com.raul.androidapps.cvapp.persistence.relations.MiscellaneousWithAllInfo
 
 interface PersistenceManager {
 
@@ -44,6 +46,12 @@ interface PersistenceManager {
         skillList: List<String>,
         gistId: String
     )
+
+    fun getListOfMiscellaneous(gistId: String): LiveData<List<MiscellaneousWithAllInfo>>
+
+    suspend fun insertListOfMiscellaneous(miscellaneousList: List<Miscellaneous>, gistId: String)
+
+
 
 
 }

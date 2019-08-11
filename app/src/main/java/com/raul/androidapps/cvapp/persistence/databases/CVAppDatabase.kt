@@ -10,9 +10,14 @@ import com.raul.androidapps.cvapp.persistence.entities.*
 import com.raul.androidapps.cvapp.persistence.utils.DbConverters
 import com.raul.androidapps.cvapp.persistence.utils.PersistenceConstants
 
-@Database(entities = [(UserInfoEntity::class), (TaskEntity::class),
-    (AchievementEntity::class), (CompanyEntity::class),
-    (EducationEntity::class), (SkillsEntity::class)], exportSchema = false, version = 1)
+@Database(
+    entities = [(UserInfoEntity::class), (TaskEntity::class),
+        (AchievementEntity::class), (CompanyEntity::class),
+        (EducationEntity::class), (SkillsEntity::class),
+        (MiscellaneousEntity::class), (MiscellaneousValueEntity::class)],
+    exportSchema = false,
+    version = 1
+)
 @TypeConverters(DbConverters::class)
 abstract class CVAppDatabase : RoomDatabase() {
     abstract fun userInfoDao(): UserInfoDao
@@ -21,6 +26,8 @@ abstract class CVAppDatabase : RoomDatabase() {
     abstract fun companyDao(): CompanyDao
     abstract fun educationDao(): EducationDao
     abstract fun skillDao(): SkillDao
+    abstract fun miscellaneousDao(): MiscellaneousDao
+    abstract fun miscellaneousValueDao(): MiscellaneousValueDao
 
     companion object {
 

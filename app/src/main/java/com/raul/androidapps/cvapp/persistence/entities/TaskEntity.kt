@@ -1,12 +1,17 @@
 package com.raul.androidapps.cvapp.persistence.entities
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 
-@Entity(tableName = "task_table", indices = [(Index(value = arrayOf("task_id"), unique = true))])
+@Entity(
+    foreignKeys = [ForeignKey(
+        entity = CompanyEntity::class,
+        parentColumns = arrayOf("company_id"),
+        childColumns = arrayOf("company_id"),
+        onDelete = ForeignKey.CASCADE
+    )],
+    tableName = "task_table", indices = [(Index(value = arrayOf("task_id"), unique = true))]
+)
 data class TaskEntity constructor(
     @PrimaryKey
     @ColumnInfo(name = "task_id")
@@ -21,10 +26,14 @@ data class TaskEntity constructor(
     var task: String
 ) {
 
-
     companion object {
 
-        fun fromStringTask(task: String, gistId: String, companyId: Int, position: Int): TaskEntity =
+        fun fromStringTask(
+            task: String,
+            gistId: String,
+            companyId: Int,
+            position: Int
+        ): TaskEntity =
             TaskEntity(
                 taskId = getTaskId(gistId, companyId, position),
                 gistId = gistId,
@@ -33,7 +42,8 @@ data class TaskEntity constructor(
                 task = task
             )
 
-        fun getTaskId(gistId: String, companyId: Int, position: Int): String = "${gistId}_${companyId}_$position"
+        fun getTaskId(gistId: String, companyId: Int, position: Int): String =
+            "${gistId}_${companyId}_$position"
 
     }
 }

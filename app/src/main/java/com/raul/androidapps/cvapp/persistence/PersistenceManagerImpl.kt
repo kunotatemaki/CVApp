@@ -2,10 +2,12 @@ package com.raul.androidapps.cvapp.persistence
 
 import androidx.lifecycle.LiveData
 import com.raul.androidapps.cvapp.model.Expertise
+import com.raul.androidapps.cvapp.model.Miscellaneous
 import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.persistence.databases.CVAppDatabase
 import com.raul.androidapps.cvapp.persistence.entities.*
 import com.raul.androidapps.cvapp.persistence.relations.CompanyWithAllInfo
+import com.raul.androidapps.cvapp.persistence.relations.MiscellaneousWithAllInfo
 import javax.inject.Inject
 
 class PersistenceManagerImpl @Inject constructor(
@@ -125,5 +127,40 @@ class PersistenceManagerImpl @Inject constructor(
     private suspend fun removeOutdatedSkills(gistId: String, lastPosition: Int) {
         db.skillDao().removeOutdatedSkills(gistId, lastPosition)
     }
+
+    override fun getListOfMiscellaneous(gistId: String): LiveData<List<MiscellaneousWithAllInfo>> =
+        db.miscellaneousDao().getListOfMiscellaneous(gistId)
+
+    override suspend fun insertListOfMiscellaneous(
+        miscellaneousList: List<Miscellaneous>,
+        gistId: String
+    ) {
+        val listOfValues: MutableList<MiscellaneousValueEntity> = mutableListOf()
+        val listOfMiscellaneous = miscellaneousList.mapIndexed { index, miscellaneous ->
+            val entity = MiscellaneousEntity.fromMiscellaneous(miscellaneous, gistId, index)
+            miscellaneous.value.forEachIndexed { innerIndex, value ->
+                listOfValues.add(
+                    MiscellaneousValueEntity.fromMiscellaneous(
+                        value, entity.miscellaneousId, innerIndex
+                    )
+                )
+            }
+            removeOutdatedMiscellaneousValues(entity.miscellaneousId, miscellaneous.value.lastIndex)
+            entity
+        }
+        db.miscellaneousDao().insert(listOfMiscellaneous)
+        db.miscellaneousValueDao().insert(listOfValues)
+        removeOutdatedMiscellaneous(gistId, miscellaneousList.lastIndex)
+    }
+
+    private suspend fun removeOutdatedMiscellaneous(gistId: String, lastPosition: Int) {
+        db.miscellaneousDao().removeOutdatedMiscellaneous(gistId, lastPosition)
+    }
+
+    private suspend fun removeOutdatedMiscellaneousValues(parentId: String, lastPosition: Int) {
+        db.miscellaneousValueDao().removeOutdatedMiscellaneousValues(parentId, lastPosition)
+    }
+
+
 }
 

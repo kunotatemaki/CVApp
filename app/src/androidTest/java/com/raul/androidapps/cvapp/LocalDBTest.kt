@@ -5,11 +5,14 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.raul.androidapps.cvapp.model.Expertise
+import com.raul.androidapps.cvapp.model.Miscellaneous
 import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.persistence.PersistenceManager
 import com.raul.androidapps.cvapp.persistence.PersistenceManagerImpl
 import com.raul.androidapps.cvapp.persistence.databases.CVAppDatabase
+import com.raul.androidapps.cvapp.persistence.entities.MiscellaneousEntity
 import com.raul.androidapps.cvapp.persistence.relations.CompanyWithAllInfo
+import com.raul.androidapps.cvapp.persistence.relations.MiscellaneousWithAllInfo
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -51,7 +54,7 @@ class LocalDBTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun getUserInfoNull() {
+    fun testGetUserInfoNull() {
         runBlocking {
             val info = persistenceManager.getUserInfo("").getItem()
             assertNull(info)
@@ -60,7 +63,7 @@ class LocalDBTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun getOneUser() {
+    fun testGetOneUser() {
         runBlocking {
             val gist1 = "gist1"
             val userInfo1 = Profile(
@@ -92,7 +95,7 @@ class LocalDBTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun getListOfTasksForOneCompanyOrdered() {
+    fun testGetListOfTasksForOneCompanyOrdered() {
         runBlocking {
             val gist = "gist1"
             val companyId1 = 1
@@ -113,7 +116,7 @@ class LocalDBTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun removeExtraTasks() {
+    fun testRemoveExtraTasks() {
         runBlocking {
             val gist = "gist"
             val companyId = 1
@@ -134,7 +137,7 @@ class LocalDBTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun getListOfAchievementsForOneCompanyOrdered() {
+    fun testGetListOfAchievementsForOneCompanyOrdered() {
         runBlocking {
             val gist = "gist1"
             val companyId1 = 1
@@ -163,7 +166,7 @@ class LocalDBTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun removeExtraAchievements() {
+    fun testRemoveExtraAchievements() {
         runBlocking {
             val gist = "gist"
             val companyId = 1
@@ -184,7 +187,7 @@ class LocalDBTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun getListOfCompaniesOrdered() {
+    fun testGetListOfCompaniesOrdered() {
         runBlocking {
             val gist = "gist"
             val date = "date"
@@ -203,7 +206,7 @@ class LocalDBTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun getCompanyWithAchievementsAndTasks() {
+    fun testGetCompanyWithAchievementsAndTasks() {
         runBlocking {
             val gist = "gist"
             val date = "date"
@@ -240,7 +243,7 @@ class LocalDBTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun getEducationForOneUserOrdered() {
+    fun testGetEducationForOneUserOrdered() {
         runBlocking {
             val gist1 = "gist1"
             val gist2 = "gist2"
@@ -260,7 +263,7 @@ class LocalDBTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun removeExtraEducation() {
+    fun testRemoveExtraEducation() {
         runBlocking {
             val gist = "gist"
             val initialUser1 =
@@ -280,7 +283,7 @@ class LocalDBTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun getSkillsForOneUserOrdered() {
+    fun testGetSkillsForOneUserOrdered() {
         runBlocking {
             val gist1 = "gist1"
             val gist2 = "gist2"
@@ -300,7 +303,7 @@ class LocalDBTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun removeExtraSkills() {
+    fun testRemoveExtraSkills() {
         runBlocking {
             val gist = "gist"
             val initialUser1 =
@@ -317,5 +320,89 @@ class LocalDBTest {
         }
     }
 
+    @Test
+    @Throws(InterruptedException::class)
+    fun testGetListOfMiscellaneousOrdered() {
+        runBlocking {
+            val gist = "gist"
+            val misc0 = Miscellaneous(0, "language", listOf())
+            val misc1 = Miscellaneous(1, "awards", listOf())
+            persistenceManager.insertListOfMiscellaneous(listOf(misc1, misc0, misc1), gist)
+
+            val miscellaneousStored: List<MiscellaneousWithAllInfo> =
+                persistenceManager.getListOfMiscellaneous(gist).getItem()
+
+            assertEquals(miscellaneousStored.size, 2)
+            assertEquals(miscellaneousStored[0].miscellaneous.title, misc0.title)
+            assertEquals(miscellaneousStored[1].miscellaneous.title, misc1.title)
+        }
+    }
+
+    @Test
+    @Throws(InterruptedException::class)
+    fun testGetMiscellaneousWithValues() {
+        runBlocking {
+            val gist = "gist"
+            val title = "company"
+            val id = 1
+
+            val values =
+                listOf("value_1", "value_2", "value_3")
+
+            val miscellaneous = Miscellaneous(
+                id = id,
+                title = title,
+                value = values
+            )
+            persistenceManager.insertListOfMiscellaneous(listOf(miscellaneous), gist)
+
+            val miscellaneousStored: List<MiscellaneousWithAllInfo> =
+                persistenceManager.getListOfMiscellaneous(gist).getItem()
+
+            assertEquals(miscellaneousStored.first().miscellaneous.title, title)
+            assertEquals(miscellaneousStored.first().values.size, values.size)
+        }
+    }
+
+    @Test
+    @Throws(InterruptedException::class)
+    fun testDeleteMiscellaneousWithValuesInCascade() {
+        runBlocking {
+            val gist = "gist"
+            val title = "company"
+            val id1 = 1
+            val id2 = 2
+
+            val values =
+                listOf("value_1", "value_2", "value_3")
+
+            val miscellaneous1 = Miscellaneous(
+                id = id1,
+                title = title,
+                value = values
+            )
+
+            val miscellaneous2 = Miscellaneous(
+                id = id2,
+                title = title,
+                value = values
+            )
+            persistenceManager.insertListOfMiscellaneous(
+                listOf(miscellaneous1, miscellaneous2),
+                gist
+            )
+
+            val valuesStoredBeforeCascade: List<String> = database.miscellaneousValueDao()
+                .getListOfMiscellaneous(MiscellaneousEntity.getMiscellaneusId(gist, id2))
+            assertEquals(valuesStoredBeforeCascade.size, 3)
+
+            val entityToRemove = MiscellaneousEntity.fromMiscellaneous(miscellaneous2, gist, 1)
+            database.miscellaneousDao().delete(entityToRemove)
+            val valuesStoredAfterCascade: List<String> = database.miscellaneousValueDao()
+                .getListOfMiscellaneous(MiscellaneousEntity.getMiscellaneusId(gist, id2))
+
+            assertEquals(valuesStoredAfterCascade.size, 0)
+        }
+    }
 
 }
