@@ -23,7 +23,11 @@ data class UserInfoEntity constructor(
     @ColumnInfo(name = "email")
     var email: String,
     @ColumnInfo(name = "description")
-    var description: String
+    var description: String,
+    @ColumnInfo(name = "profile_pic")
+    var profilePic: String,
+    @ColumnInfo(name = "background_pic")
+    var backgroundPic: String
 ){
 
     companion object{
@@ -36,7 +40,9 @@ data class UserInfoEntity constructor(
                 linkedin = profile.linkedin,
                 github = profile.github,
                 email = profile.email,
-                description = profile.description
+                description = profile.description,
+                profilePic = profile.profilePic,
+                backgroundPic = profile.backgroundPic
             )
 
     }

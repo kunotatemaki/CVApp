@@ -73,7 +73,9 @@ class LocalDBTest {
                 email = "email1",
                 phone = "phone1",
                 name = "name1",
-                description = "description1"
+                description = "description1",
+                profilePic = "profilePic1",
+                backgroundPic = "backgroundPic1"
             )
             val gist2 = "gist2"
             val userInfo2 = Profile(
@@ -82,7 +84,9 @@ class LocalDBTest {
                 email = "email2",
                 phone = "phone2",
                 name = "name2",
-                description = "description2"
+                description = "description2",
+                profilePic = "profilePic2",
+                backgroundPic = "backgroundPic2"
             )
             persistenceManager.insertUserInfo(userInfo1, gist1)
             persistenceManager.insertUserInfo(userInfo2, gist2)
@@ -435,7 +439,7 @@ class LocalDBTest {
             val skillsStored: List<String> =
                 persistenceManager.getListOfSkills(gist1).getItem()
 
-            assertEquals(skillsStored, skillUser1.asReversed())
+            assertEquals(skillsStored, skillUser1)
         }
     }
 
@@ -454,7 +458,7 @@ class LocalDBTest {
             val skillStored: List<String> =
                 persistenceManager.getListOfSkills(gist).getItem()
 
-            assertEquals(initialUser2.asReversed(), skillStored)
+            assertEquals(initialUser2, skillStored)
         }
     }
 

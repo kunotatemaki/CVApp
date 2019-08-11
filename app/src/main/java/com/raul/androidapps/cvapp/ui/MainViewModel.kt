@@ -15,7 +15,7 @@ class MainViewModel @Inject constructor(
 
 //    fun fetchCVInfoAsync(gistId: String){
 //        GlobalScope.launch {
-//            //todo create viemodel scope
+//
 //            val response = networkServiceFactory.getServiceInstance().getCVInfo(gistId)
 //            val profile = response.body()?.files?.profileContent?.toProfile()
 //            val listOfEducationItems = response.body()?.files?.educationContent?.toListOfEducationItems()
@@ -31,4 +31,3 @@ class MainViewModel @Inject constructor(
 //todo splash icon
 //todo test in repo
 //header
-//remove this class

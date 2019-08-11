@@ -19,7 +19,9 @@ class EntitiesTest {
             email = "email",
             phone = "phone",
             name = "name",
-            description = "description"
+            description = "description",
+            profilePic = "profile",
+            backgroundPic = "background"
         )
         val entity = UserInfoEntity.fromProfile(profile = profile, gistId = gist)
         assertEquals(profile.description, entity.description)
@@ -43,14 +45,13 @@ class EntitiesTest {
             companyId = companyId
         )
         assertEquals(entity.task, task)
-        assertEquals(entity.companyId, companyId)
+        assertEquals(entity.parentId, CompanyEntity.getCompanyId(gist, companyId))
         assertEquals(entity.gistId, gist)
         assertEquals(entity.position, position)
         assertEquals(
             entity.taskId,
             TaskEntity.getTaskId(
-                gistId = gist,
-                companyId = companyId,
+                parentId = CompanyEntity.getCompanyId(gist, companyId),
                 position = position
             )
         )
@@ -70,14 +71,13 @@ class EntitiesTest {
             companyId = companyId
         )
         assertEquals(entity.achievement, achievement)
-        assertEquals(entity.companyId, companyId)
+        assertEquals(entity.parentId, CompanyEntity.getCompanyId(gist, companyId))
         assertEquals(entity.gistId, gist)
         assertEquals(entity.position, position)
         assertEquals(
             entity.achievementId,
             AchievementEntity.getAchievementId(
-                gistId = gist,
-                companyId = companyId,
+                parentId = CompanyEntity.getCompanyId(gist, companyId),
                 position = position
             )
         )
@@ -97,7 +97,7 @@ class EntitiesTest {
         val entity = CompanyEntity.fromExpertise(gistId = gist, expertise = expertise)
         assertEquals(entity.name, expertise.company)
         assertEquals(entity.date, expertise.date)
-        assertEquals(entity.companyId, expertise.id)
+        assertEquals(entity.companyId, CompanyEntity.getCompanyId(gist, expertise.id))
         assertEquals(entity.gistId, gist)
     }
 
