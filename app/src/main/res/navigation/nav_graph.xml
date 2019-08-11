@@ -7,12 +7,27 @@
 
     <fragment android:id="@+id/info_fragment"
               android:name="com.raul.androidapps.cvapp.ui.info.InfoFragment"
-              android:label="template_fragment" tools:layout="@layout/info_fragment"/>
+              android:label="info_fragment" tools:layout="@layout/info_fragment"/>
 
     <fragment
             android:id="@+id/expertise_fragment"
             android:name="com.raul.androidapps.cvapp.ui.expertise.ExpertiseFragment"
             android:label="expertise_fragment"
             tools:layout="@layout/expertise_fragment" />
+
+    <fragment android:id="@+id/skill_fragment"
+              android:name="com.raul.androidapps.cvapp.ui.skill.SkillFragment"
+              android:label="skill_fragment" tools:layout="@layout/skill_fragment"/>
+
+    <fragment
+            android:id="@+id/education_fragment"
+            android:name="com.raul.androidapps.cvapp.ui.education.EducationFragment"
+            android:label="education_fragment"
+            tools:layout="@layout/education_fragment" />
+
+    <fragment android:id="@+id/miscellaneous_fragment"
+              android:name="com.raul.androidapps.cvapp.ui.miscellaneous.MiscellaneousFragment"
+              android:label="miscellaneous_fragment" tools:layout="@layout/miscellaneous_fragment"/>
+
 
 </navigation>

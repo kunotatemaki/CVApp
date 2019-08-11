@@ -9,15 +9,15 @@
         android:icon="@drawable/expertise"
         android:title="@string/menu_expertise"/>
     <item
-        android:id="@+id/menu_skills"
+        android:id="@+id/skill_fragment"
         android:icon="@drawable/skills"
         android:title="@string/menu_skills"/>
     <item
-        android:id="@+id/menu_education"
+        android:id="@+id/education_fragment"
         android:icon="@drawable/formation"
         android:title="@string/menu_formation"/>
     <item
-        android:id="@+id/menu_miscellaneous"
+        android:id="@+id/miscellaneous_fragment"
         android:icon="@drawable/awards"
         android:title="@string/menu_miscellaneous"/>
 </menu>

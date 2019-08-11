@@ -76,6 +76,10 @@ dependencies {
     implementation "android.arch.navigation:navigation-fragment:$rootProject.navigationVersion"
     implementation "android.arch.navigation:navigation-ui:$rootProject.navigationVersion"
 
+    implementation 'androidx.fragment:fragment:1.1.0-rc04'
+    debugImplementation 'androidx.fragment:fragment-testing:1.1.0-rc04'
+    implementation "androidx.test.ext:junit:1.1.1"
+
 
     def mockito_version = '2.23.0'
     def mockitoKotlin_version = '2.1.0'
@@ -107,4 +111,5 @@ dependencies {
     def lifecycleVersion = '2.0.0'
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    implementation 'androidx.test:rules:1.2.0'
 }
