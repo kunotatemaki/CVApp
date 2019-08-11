@@ -2,6 +2,8 @@ package com.raul.androidapps.cvapp.databinding
 
 import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
+import android.text.Html
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -145,6 +147,19 @@ class CVAppBindingAdapters @Inject constructor() {
             if (it is Int) {
                 textView.setTextColor(it)
             }
+        }
+    }
+
+    @BindingAdapter("fromHtml")
+    fun setHtmlTextOnTextView(textView: TextView, html: String?) {
+        html?.let {
+            val text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
+            } else {
+                @Suppress("DEPRECATION")
+                Html.fromHtml(html)
+            }
+            textView.text = text
         }
     }
 }

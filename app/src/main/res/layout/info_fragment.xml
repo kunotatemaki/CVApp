@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+                name="descriptionText"
+                type="String" />
+    </data>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
@@ -18,6 +24,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
                         android:layout_gravity="top"
+                        fromHtml="@{descriptionText}"
                         tools:text="@tools:sample/lorem/random" />
         </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -1,6 +1,8 @@
 package com.raul.androidapps.cvapp.ui.info
 
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +41,7 @@ class InfoFragment : BaseFragment() {
 
         viewModel.getDescription().observe({ this.lifecycle }) {
             it?.let { description ->
-                binding.description.text = description
+                binding.descriptionText = description
             }
         }
     }
