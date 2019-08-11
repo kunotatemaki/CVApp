@@ -9,10 +9,10 @@ import com.raul.androidapps.cvapp.persistence.entities.AchievementEntity
 @Dao
 abstract class AchievementDao : BaseDao<AchievementEntity>() {
 
-    @Query("SELECT achievement FROM achievement_table WHERE gist_id LIKE :gistId AND company_id = :companyId ORDER BY position ASC")
-    abstract fun getListOfAchievements(gistId: String, companyId: Int): LiveData<List<String>>
+    @Query("SELECT achievement FROM achievement_table WHERE gist_id LIKE :gistId AND parent_id LIKE :parentId ORDER BY position ASC")
+    abstract fun getListOfAchievements(gistId: String, parentId: String): LiveData<List<String>>
 
-    @Query("DELETE FROM achievement_table WHERE gist_id LIKE :gistId AND company_id = :companyId AND position > :lastPosition")
-    abstract suspend fun removeListOfAchievement(gistId: String, companyId: Int, lastPosition: Int)
+    @Query("DELETE FROM achievement_table WHERE gist_id LIKE :gistId AND parent_id LIKE :parentId AND position > :lastPosition")
+    abstract suspend fun removeListOfAchievement(gistId: String, parentId: String, lastPosition: Int)
 
 }

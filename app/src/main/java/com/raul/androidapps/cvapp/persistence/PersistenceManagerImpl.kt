@@ -21,7 +21,7 @@ class PersistenceManagerImpl @Inject constructor(
         db.userInfoDao().insert(UserInfoEntity.fromProfile(profile, gistId))
     }
 
-    override fun getListOfTasks(gistId: String, companyId: Int): LiveData<List<String>> =
+    override fun getListOfTasks(gistId: String, companyId: String): LiveData<List<String>> =
         db.taskDao().getListOfTasks(gistId, companyId)
 
     override suspend fun insertListOfTasks(
@@ -42,12 +42,12 @@ class PersistenceManagerImpl @Inject constructor(
     }
 
     private suspend fun removeListOfTasks(gistId: String, companyId: Int, lastPosition: Int) {
-        db.taskDao().removeListOfTasks(gistId, companyId, lastPosition)
+        db.taskDao().removeListOfTasks(gistId, CompanyEntity.getCompanyId(gistId, companyId), lastPosition)
     }
 
     override fun getListOfAchievements(
         gistId: String,
-        companyId: Int
+        companyId: String
     ): LiveData<List<String>> =
         db.achievementDao().getListOfAchievements(gistId, companyId)
 
@@ -73,7 +73,7 @@ class PersistenceManagerImpl @Inject constructor(
         companyId: Int,
         lastPosition: Int
     ) {
-        db.achievementDao().removeListOfAchievement(gistId, companyId, lastPosition)
+        db.achievementDao().removeListOfAchievement(gistId, CompanyEntity.getCompanyId(gistId, companyId), lastPosition)
     }
 
     override fun getListOfCompanies(gistId: String): LiveData<List<CompanyWithAllInfo>> =

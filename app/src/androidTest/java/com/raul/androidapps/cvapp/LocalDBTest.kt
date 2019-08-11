@@ -10,6 +10,7 @@ import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.persistence.PersistenceManager
 import com.raul.androidapps.cvapp.persistence.PersistenceManagerImpl
 import com.raul.androidapps.cvapp.persistence.databases.CVAppDatabase
+import com.raul.androidapps.cvapp.persistence.entities.CompanyEntity
 import com.raul.androidapps.cvapp.persistence.entities.MiscellaneousEntity
 import com.raul.androidapps.cvapp.persistence.relations.CompanyWithAllInfo
 import com.raul.androidapps.cvapp.persistence.relations.MiscellaneousWithAllInfo
@@ -105,10 +106,27 @@ class LocalDBTest {
             val tasksCompany2 =
                 listOf("task${companyId2}_1", "task${companyId2}_2", "task${companyId2}_3")
 
-            persistenceManager.insertListOfTasks(tasksCompany1, gist, companyId1)
-            persistenceManager.insertListOfTasks(tasksCompany2, gist, companyId2)
+            val expertise1 = Expertise(
+                id = companyId1,
+                achievements = listOf(),
+                tasks = tasksCompany1,
+                date = "date",
+                company = "name"
+            )
+            val expertise2 = Expertise(
+                id = companyId2,
+                achievements = listOf(),
+                tasks = tasksCompany2,
+                date = "date",
+                company = "name"
+            )
+            persistenceManager.insertListOfCompanies(listOf(expertise1, expertise2), gist)
+
             val tasksStored: List<String> =
-                persistenceManager.getListOfTasks(gist, companyId1).getItem()
+                persistenceManager.getListOfTasks(
+                    gist,
+                    CompanyEntity.getCompanyId(gist, companyId1)
+                ).getItem()
 
             assertEquals(tasksCompany1, tasksStored)
         }
@@ -122,14 +140,29 @@ class LocalDBTest {
             val companyId = 1
             val initialTasks = listOf("task1", "task2", "task3")
 
-            persistenceManager.insertListOfTasks(initialTasks, gist, companyId)
+            val expertiseBefore = Expertise(
+                id = companyId,
+                achievements = listOf(),
+                tasks = initialTasks,
+                date = "date",
+                company = "name"
+            )
+
+            persistenceManager.insertListOfCompanies(listOf(expertiseBefore), gist)
 
             val updatedTasks = listOf("updatedTask1", "updatedTask2")
-
-            persistenceManager.insertListOfTasks(updatedTasks, gist, companyId)
+            val expertiseAfter = Expertise(
+                id = companyId,
+                achievements = listOf(),
+                tasks = updatedTasks,
+                date = "date",
+                company = "name"
+            )
+            persistenceManager.insertListOfCompanies(listOf(expertiseAfter), gist)
 
             val tasksStored: List<String> =
-                persistenceManager.getListOfTasks(gist, companyId).getItem()
+                persistenceManager.getListOfTasks(gist, CompanyEntity.getCompanyId(gist, companyId))
+                    .getItem()
 
             assertEquals(updatedTasks, tasksStored)
         }
@@ -155,10 +188,27 @@ class LocalDBTest {
                     "achievement${companyId2}_3"
                 )
 
-            persistenceManager.insertListOfAchievements(achievementsCompany1, gist, companyId1)
-            persistenceManager.insertListOfAchievements(achievementsCompany2, gist, companyId2)
+            val expertise1 = Expertise(
+                id = companyId1,
+                tasks = listOf(),
+                achievements = achievementsCompany1,
+                date = "date",
+                company = "name"
+            )
+            val expertise2 = Expertise(
+                id = companyId2,
+                tasks = listOf(),
+                achievements = achievementsCompany2,
+                date = "date",
+                company = "name"
+            )
+            persistenceManager.insertListOfCompanies(listOf(expertise1, expertise2), gist)
+
             val achievementsStored: List<String> =
-                persistenceManager.getListOfAchievements(gist, companyId1).getItem()
+                persistenceManager.getListOfAchievements(
+                    gist,
+                    CompanyEntity.getCompanyId(gist, companyId1)
+                ).getItem()
 
             assertEquals(achievementsCompany1, achievementsStored)
         }
@@ -171,19 +221,107 @@ class LocalDBTest {
             val gist = "gist"
             val companyId = 1
             val initialAchievements = listOf("achievement1", "achievement2", "achievement3")
+            val expertiseBefore = Expertise(
+                id = companyId,
+                tasks = listOf(),
+                achievements = initialAchievements,
+                date = "date",
+                company = "name"
+            )
 
-            persistenceManager.insertListOfAchievements(initialAchievements, gist, companyId)
+            persistenceManager.insertListOfCompanies(listOf(expertiseBefore), gist)
 
             val updatedAchievements = listOf("updatedAchievement1", "updatedAchievement2")
-
-            persistenceManager.insertListOfAchievements(updatedAchievements, gist, companyId)
+            val expertiseAfter = Expertise(
+                id = companyId,
+                tasks = listOf(),
+                achievements = updatedAchievements,
+                date = "date",
+                company = "name"
+            )
+            persistenceManager.insertListOfCompanies(listOf(expertiseAfter), gist)
 
             val achievementsStored: List<String> =
-                persistenceManager.getListOfAchievements(gist, companyId).getItem()
+                persistenceManager.getListOfAchievements(
+                    gist,
+                    CompanyEntity.getCompanyId(gist, companyId)
+                ).getItem()
 
             assertEquals(updatedAchievements, achievementsStored)
         }
     }
+
+    @Test
+    @Throws(InterruptedException::class)
+    fun testDeleteCompanyWithValuesInCascade() {
+        runBlocking {
+            val gist = "gist"
+            val companyId1 = 1
+            val companyId2 = 2
+            val achievementsCompany =
+                listOf(
+                    "achievement_1",
+                    "achievement_2",
+                    "achievement_3"
+                )
+            val tasksCompany =
+                listOf("task_1", "task_2", "task_3")
+
+            val expertise1 = Expertise(
+                id = companyId1,
+                tasks = tasksCompany,
+                achievements = achievementsCompany,
+                date = "date",
+                company = "name"
+            )
+            val expertise2 = Expertise(
+                id = companyId2,
+                tasks = tasksCompany,
+                achievements = achievementsCompany,
+                date = "date",
+                company = "name"
+            )
+
+
+            persistenceManager.insertListOfCompanies(
+                listOf(expertise1, expertise2),
+                gist
+            )
+
+            val tasksStoredBeforeCascade: List<String> =
+                persistenceManager.getListOfTasks(
+                    gist,
+                    CompanyEntity.getCompanyId(gist, companyId2)
+                ).getItem()
+            val achievementsStoredBeforeCascade: List<String> =
+                persistenceManager.getListOfTasks(
+                    gist,
+                    CompanyEntity.getCompanyId(gist, companyId2)
+                ).getItem()
+            assertEquals(tasksStoredBeforeCascade.size, 3)
+            assertEquals(achievementsStoredBeforeCascade.size, 3)
+
+            val entity = CompanyEntity.fromExpertise(
+                expertise = expertise2,
+                gistId = gist
+            )
+            database.companyDao().delete(entity)
+
+            val tasksStoredAfterCascade: List<String> =
+                persistenceManager.getListOfTasks(
+                    gist,
+                    CompanyEntity.getCompanyId(gist, companyId2)
+                ).getItem()
+            val achievementsStoredAfterCascade: List<String> =
+                persistenceManager.getListOfTasks(
+                    gist,
+                    CompanyEntity.getCompanyId(gist, companyId2)
+                ).getItem()
+            assertEquals(tasksStoredAfterCascade.size, 0)
+            assertEquals(achievementsStoredAfterCascade.size, 0)
+        }
+    }
+
 
     @Test
     @Throws(InterruptedException::class)

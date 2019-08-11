@@ -13,7 +13,7 @@ interface PersistenceManager {
 
     suspend fun insertUserInfo(profile: Profile, gistId: String)
 
-    fun getListOfTasks(gistId: String, companyId: Int): LiveData<List<String>>
+    fun getListOfTasks(gistId: String, companyId: String): LiveData<List<String>>
 
     suspend fun insertListOfTasks(
         tasks: List<String>,
@@ -21,7 +21,7 @@ interface PersistenceManager {
         companyId: Int
     )
 
-    fun getListOfAchievements(gistId: String, companyId: Int): LiveData<List<String>>
+    fun getListOfAchievements(gistId: String, companyId: String): LiveData<List<String>>
 
     suspend fun insertListOfAchievements(
         achievements: List<String>,

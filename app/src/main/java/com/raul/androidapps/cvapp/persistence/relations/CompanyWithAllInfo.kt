@@ -11,10 +11,10 @@ class CompanyWithAllInfo {
     @Embedded
     lateinit var company: CompanyEntity
 
-    @Relation(parentColumn = "company_id", entityColumn = "company_id")
+    @Relation(parentColumn = "company_id", entityColumn = "parent_id")
     lateinit var tasks: List<TaskEntity>
 
-    @Relation(parentColumn = "company_id", entityColumn = "company_id")
+    @Relation(parentColumn = "company_id", entityColumn = "parent_id")
     lateinit var achievements: List<AchievementEntity>
 
 }

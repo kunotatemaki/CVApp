@@ -10,10 +10,10 @@ import com.raul.androidapps.cvapp.persistence.entities.TaskEntity
 @Dao
 abstract class TaskDao : BaseDao<TaskEntity>() {
 
-    @Query("SELECT task FROM task_table WHERE gist_id LIKE :gistId AND company_id = :companyId ORDER BY position ASC")
-    abstract fun getListOfTasks(gistId: String, companyId: Int): LiveData<List<String>>
+    @Query("SELECT task FROM task_table WHERE gist_id LIKE :gistId AND parent_id LIKE :parentId ORDER BY position ASC")
+    abstract fun getListOfTasks(gistId: String, parentId: String): LiveData<List<String>>
 
-    @Query("DELETE FROM task_table WHERE gist_id LIKE :gistId AND company_id = :companyId AND position > :lastPosition")
-    abstract suspend fun removeListOfTasks(gistId: String, companyId: Int, lastPosition: Int)
+    @Query("DELETE FROM task_table WHERE gist_id LIKE :gistId AND parent_id LIKE :parentId AND position > :lastPosition")
+    abstract suspend fun removeListOfTasks(gistId: String, parentId: String, lastPosition: Int)
 
 }
