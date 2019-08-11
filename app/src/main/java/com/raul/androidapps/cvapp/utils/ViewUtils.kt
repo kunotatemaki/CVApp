@@ -2,9 +2,12 @@ package com.raul.androidapps.cvapp.utils
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
+import android.util.TypedValue
 import com.raul.androidapps.cvapp.R
 import com.raul.androidapps.cvapp.extensions.safe
+import com.raul.androidapps.cvapp.resources.ResourcesManager
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,6 +26,9 @@ class ViewUtils @Inject constructor() {
         blue = if (blue < 0.03928) blue / 12.92 else Math.pow((blue + 0.055) / 1.055, 2.4)
         return (0.2126 * red + 0.7152 * green + 0.0722 * blue).toFloat() < 0.5
     }
+
+    fun getPxFromDp(resourcesManager: ResourcesManager, dp: Float) =
+        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resourcesManager.getResources().displayMetrics)
 
     fun showAlertDialog(
         activity: WeakReference<Activity>, allowCancelWhenTouchingOutside: Boolean,

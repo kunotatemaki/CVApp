@@ -29,7 +29,6 @@
                     android:background="@android:color/transparent"
                     android:fitsSystemWindows="true"
                     app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                    app:contentScrim="@android:color/white"
                     app:expandedTitleMarginEnd="16dp"
                     app:expandedTitleMarginStart="16dp"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
@@ -44,6 +43,7 @@
                             android:layout_width="0dp"
                             android:layout_height="0dp"
                             android:scaleType="centerCrop"
+                            tools:src="@mipmap/ic_launcher"
                             app:layout_constraintDimensionRatio="3:2"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -51,17 +51,29 @@
                             tools:ignore="ContentDescription"
                             imageCenterCropped="@{profile.backgroundPic}" />
 
-<!--                    <ImageView-->
-<!--                            android:id="@+id/recipe_pic_protection"-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="0dp"-->
-<!--                            android:background="@drawable/photo_background_protection"-->
-<!--                            app:layout_constraintDimensionRatio="3:2"-->
-<!--                            app:layout_constraintEnd_toEndOf="parent"-->
-<!--                            app:layout_constraintStart_toStartOf="parent"-->
-<!--                            app:layout_constraintTop_toTopOf="parent"-->
-<!--                            tools:ignore="ContentDescription"-->
-<!--                            tools:visibility="invisible" />-->
+                    <ImageView
+                            android:id="@+id/profile_pic_layer"
+                            android:layout_width="155dp"
+                            android:layout_height="155dp"
+                            android:src="@drawable/item_dot"
+                            tools:src="@mipmap/ic_launcher"
+                            app:layout_constraintStart_toStartOf="@id/profile_pic"
+                            app:layout_constraintEnd_toEndOf="@id/profile_pic"
+                            app:layout_constraintTop_toTopOf="@id/profile_pic"
+                            app:layout_constraintBottom_toBottomOf="@id/profile_pic"
+                            tools:ignore="ContentDescription"/>
+
+                    <ImageView
+                            android:id="@+id/profile_pic"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            imageRounded="@{profile.profilePic}"
+                            tools:src="@mipmap/ic_launcher"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="16dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            tools:ignore="ContentDescription"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.Toolbar
@@ -70,8 +82,7 @@
                         android:layout_height="?attr/actionBarSize"
                         android:background="@android:color/transparent"
                         app:contentInsetStart="70dp"
-                        app:layout_collapseMode="pin"
-                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                        app:layout_collapseMode="pin" />
 
 <!--                <TextView-->
 <!--                        android:id="@+id/recipe_name_recipe_details"-->
@@ -84,6 +95,7 @@
 <!--                        android:textAppearance="@style/Theme.ExpandedText"-->
 <!--                        app:layout_anchor="@id/appbarlayout_recipe_details" />-->
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
 
         </com.google.android.material.appbar.AppBarLayout>
 
