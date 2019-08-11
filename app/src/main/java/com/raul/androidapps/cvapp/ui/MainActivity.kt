@@ -58,6 +58,7 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
         viewModel.getProfile().observe({ lifecycle }) {
             it?.let {
                 binding.profile = it
+                binding.profilePicLayer.visibility = View.VISIBLE
                 setTitle(it.name)
             }
         }
@@ -123,7 +124,7 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
         paramsProfilePicLayer.width = paramsProfilePicLayer.height
         binding.profilePicLayer.requestLayout()
 
-        binding.backgroundPic.alpha = 1 - percentage
+        binding.backgroundPic.alpha = 0.4f - percentage
         binding.profilePicLayer.alpha = 1 - percentage
 
     }

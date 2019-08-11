@@ -53,20 +53,21 @@
 
                     <ImageView
                             android:id="@+id/profile_pic_layer"
-                            android:layout_width="155dp"
-                            android:layout_height="155dp"
-                            android:src="@drawable/item_dot"
+                            android:layout_width="135dp"
+                            android:layout_height="135dp"
+                            android:src="@drawable/item_frame"
                             tools:src="@mipmap/ic_launcher"
                             app:layout_constraintStart_toStartOf="@id/profile_pic"
                             app:layout_constraintEnd_toEndOf="@id/profile_pic"
                             app:layout_constraintTop_toTopOf="@id/profile_pic"
                             app:layout_constraintBottom_toBottomOf="@id/profile_pic"
-                            tools:ignore="ContentDescription"/>
+                            tools:ignore="ContentDescription"
+                            android:visibility="invisible"/>
 
                     <ImageView
                             android:id="@+id/profile_pic"
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
                             imageRounded="@{profile.profilePic}"
                             tools:src="@mipmap/ic_launcher"
                             app:layout_constraintStart_toStartOf="parent"
