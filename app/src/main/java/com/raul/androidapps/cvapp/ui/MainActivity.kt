@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.raul.androidapps.cvapp.R
+import com.raul.androidapps.cvapp.databinding.CVAppBindingAdapters
+import com.raul.androidapps.cvapp.databinding.CVAppBindingComponent
 import com.raul.androidapps.cvapp.databinding.MainActivityBinding
 import com.raul.androidapps.cvapp.resources.ResourcesManagerImpl
 import com.raul.androidapps.cvapp.ui.common.CVAppViewModelFactory
@@ -32,10 +34,13 @@ class MainActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var viewUtils: ViewUtils
 
+    @Inject
+    lateinit var cvAppBindingComponent: CVAppBindingComponent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
+        binding = DataBindingUtil.setContentView(this, R.layout.main_activity, cvAppBindingComponent)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 
         val navController = findNavController(this, R.id.fragment_container)
@@ -47,6 +52,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
         viewModel.getProfile().observe({ lifecycle }) {
             it?.let {
+                binding.profile = it
                 setTitle(it.name)
             }
         }
