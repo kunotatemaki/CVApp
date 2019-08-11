@@ -16,6 +16,7 @@ class EducationFragment : BaseFragment() {
 
     private lateinit var binding: EducationFragmentBinding
     private lateinit var viewModel: EducationViewModel
+    private lateinit var adapter: EducationAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,13 +33,20 @@ class EducationFragment : BaseFragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(EducationViewModel::class.java)
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(EducationViewModel::class.java)
         super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
+        adapter = EducationAdapter(bindingComponent = cvAppBindingComponent)
+        binding.educationList.adapter = adapter
+        viewModel.getEducation().observe({ lifecycle }) {
+            it?.let {
+                adapter.updateItems(it)
+            }
+        }
     }
 
     override fun getSwipeToRefresh(): SwipeRefreshLayout? =
-        null
+        binding.swipeRefresh
 
     override fun getViewModel(): BaseViewModel = viewModel
 

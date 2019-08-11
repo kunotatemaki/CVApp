@@ -6,7 +6,7 @@
     <data>
 
         <variable
-                name="skill"
+                name="education"
                 type="String" />
     </data>
 
@@ -21,24 +21,24 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:src="@drawable/item_dot"
-                app:layout_constraintTop_toTopOf="@id/skillText"
-                app:layout_constraintBottom_toBottomOf="@id/skillText"
+                app:layout_constraintTop_toTopOf="@id/educationText"
+                app:layout_constraintBottom_toBottomOf="@id/educationText"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="ContentDescription" />
 
         <TextView
-                android:id="@+id/skillText"
+                android:id="@+id/educationText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                fromHtml="@{skill}"
+                fromHtml="@{education}"
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/item_dot"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:text="Android"
+                tools:text="Industriales"
                 />
 
 
