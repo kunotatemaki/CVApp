@@ -26,21 +26,21 @@ class Repository @Inject constructor(
     private val persistenceManager: PersistenceManager
 ) {
 
-    private val loadingState: MutableLiveData<Resource<Boolean>> = MutableLiveData()
+    private val loadingState: MutableLiveData<Resource<Void>> = MutableLiveData()
 
     init {
         loadingState.value = Resource.success(null)
     }
 
-    fun getLoadingState(): LiveData<Resource<Boolean>> = loadingState
+    fun getLoadingState(): LiveData<Resource<Void>> = loadingState
 
     fun geUserInfo(gistId: String): LiveData<Profile> {
-        fetchFromNetwork(gistId)
+        fetchFromNetwork(gistId, forceFetch = false)
         return persistenceManager.getUserInfo(gistId)
     }
 
-    fun fetchFromNetwork(gistId: String) {
-        if (shouldFetch()) {
+    fun fetchFromNetwork(gistId: String, forceFetch: Boolean) {
+        if (forceFetch || shouldFetch()) {
             GlobalScope.launch {
                 fetchFromNetworkAsync(gistId)
             }

@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 import com.raul.androidapps.cvapp.R
 import com.raul.androidapps.cvapp.databinding.SkillFragmentBinding
 import com.raul.androidapps.cvapp.databinding.SkillFragmentBindingImpl
 import com.raul.androidapps.cvapp.ui.common.BaseFragment
+import com.raul.androidapps.cvapp.ui.common.BaseViewModel
 
 class SkillFragment : BaseFragment() {
 
@@ -33,14 +35,15 @@ class SkillFragment : BaseFragment() {
         return binding.root
     }
 
-
-
-
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SkillViewModel::class.java)
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SkillViewModel::class.java)
         // TODO: Use the ViewModel
     }
+
+    override fun getSwipeToRefresh(): SwipeRefreshLayout? =
+        null
+
+    override fun getViewModel(): BaseViewModel = viewModel
 
 }
