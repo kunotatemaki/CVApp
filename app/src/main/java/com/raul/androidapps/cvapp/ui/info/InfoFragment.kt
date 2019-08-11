@@ -1,18 +1,14 @@
 package com.raul.androidapps.cvapp.ui.info
 
-import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.raul.androidapps.cvapp.BuildConfig
 import com.raul.androidapps.cvapp.R
 import com.raul.androidapps.cvapp.databinding.InfoFragmentBinding
-import com.raul.androidapps.cvapp.ui.MainViewModel
 import com.raul.androidapps.cvapp.ui.common.BaseFragment
 import com.raul.androidapps.cvapp.ui.common.BaseViewModel
 
@@ -41,7 +37,7 @@ class InfoFragment : BaseFragment() {
 
         viewModel.getDescription().observe({ this.lifecycle }) {
             it?.let { description ->
-                binding.descriptionText = description
+                binding.description = description
             }
         }
     }

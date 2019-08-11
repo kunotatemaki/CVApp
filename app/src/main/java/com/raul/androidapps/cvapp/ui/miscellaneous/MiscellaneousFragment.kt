@@ -16,6 +16,7 @@ class MiscellaneousFragment : BaseFragment() {
 
     private lateinit var binding: MiscellaneousFragmentBinding
     private lateinit var viewModel: MiscellaneousViewModel
+    private lateinit var adapter: MiscellaneousAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,11 +35,18 @@ class MiscellaneousFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MiscellaneousViewModel::class.java)
         super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
+        adapter = MiscellaneousAdapter(cvAppBindingComponent)
+        binding.miscellaneousList.adapter = adapter
+        viewModel.getMiscellaneous().observe({ lifecycle }) {
+            it?.let {
+                adapter.updateItems(it)
+            }
+        }
     }
 
     override fun getSwipeToRefresh(): SwipeRefreshLayout? =
-        null
+        binding.swipeRefresh
+
 
     override fun getViewModel(): BaseViewModel = viewModel
 

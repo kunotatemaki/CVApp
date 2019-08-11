@@ -7,6 +7,7 @@ import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.network.NetworkServiceFactory
 import com.raul.androidapps.cvapp.network.Resource
 import com.raul.androidapps.cvapp.persistence.PersistenceManager
+import com.raul.androidapps.cvapp.persistence.relations.MiscellaneousWithAllInfo
 import com.raul.androidapps.cvapp.preferences.PreferencesConstants
 import com.raul.androidapps.cvapp.preferences.PreferencesManager
 import com.raul.androidapps.cvapp.utils.RateLimiter
@@ -47,6 +48,11 @@ class Repository @Inject constructor(
     fun getEducation(gistId: String): LiveData<List<String>> {
         fetchFromNetwork(gistId, forceFetch = false)
         return persistenceManager.getEducation(gistId)
+    }
+
+    fun getMiscellaneous(gistId: String): LiveData<List<MiscellaneousWithAllInfo>> {
+        fetchFromNetwork(gistId, forceFetch = false)
+        return persistenceManager.getListOfMiscellaneous(gistId)
     }
 
     fun fetchFromNetwork(gistId: String, forceFetch: Boolean) {
