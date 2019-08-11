@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import com.raul.androidapps.cvapp.BuildConfig
 import com.raul.androidapps.cvapp.R
 import com.raul.androidapps.cvapp.databinding.InfoFragmentBinding
 import com.raul.androidapps.cvapp.ui.common.BaseFragment
@@ -33,7 +34,12 @@ class InfoFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(InfoViewModel::class.java)
-        // TODO: Use the ViewModel
+
+        viewModel.getDescription(BuildConfig.CV_GIST_ID).observe({ this.lifecycle }) {
+            it?.let { description ->
+                binding.description.text = description
+            }
+        }
     }
 
 }
