@@ -27,7 +27,7 @@ class MainViewModel @Inject constructor(
 //    }
 }
 
-
+//todo fix pull to refresh when expanding
 //todo splash icon
 //todo test in repo
 //header
