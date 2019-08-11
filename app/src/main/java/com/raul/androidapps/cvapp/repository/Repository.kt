@@ -39,6 +39,11 @@ class Repository @Inject constructor(
         return persistenceManager.getUserInfo(gistId)
     }
 
+    fun getSkills(gistId: String): LiveData<List<String>> {
+        fetchFromNetwork(gistId, forceFetch = false)
+        return persistenceManager.getListOfSkills(gistId)
+    }
+
     fun fetchFromNetwork(gistId: String, forceFetch: Boolean) {
         if (forceFetch || shouldFetch()) {
             GlobalScope.launch {

@@ -11,8 +11,8 @@ class InfoViewModel @Inject constructor(private val repository: Repository) :
 
     private val description: MutableLiveData<String> = MutableLiveData()
 
-    fun getDescription(gist: String): LiveData<String> {
-        repository.geUserInfo(gist).observeForever {
+    fun getDescription(): LiveData<String> {
+        repository.geUserInfo(getGistId()).observeForever {
             it?.let {
                 description.postValue(it.description)
             }

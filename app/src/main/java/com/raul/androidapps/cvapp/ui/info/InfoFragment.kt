@@ -37,10 +37,9 @@ class InfoFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(InfoViewModel::class.java)
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.getDescription(BuildConfig.CV_GIST_ID).observe({ this.lifecycle }) {
+        viewModel.getDescription().observe({ this.lifecycle }) {
             it?.let { description ->
-                binding.description.text =
-                    description + description + description + description + description
+                binding.description.text = description
             }
         }
     }
