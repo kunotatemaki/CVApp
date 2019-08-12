@@ -67,6 +67,7 @@ class Repository @Inject constructor(
     @VisibleForTesting
     suspend fun fetchFromNetworkAsync(gistId: String) =
         withContext(Dispatchers.IO) {
+            loadingState.postValue(Resource.loading(null))
             val response = networkServiceFactory.getServiceInstance().getCVInfo(gistId)
             if (response.isSuccessful) {
                 loadingState.postValue(Resource.success(null))

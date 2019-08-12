@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
@@ -17,6 +18,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.raul.androidapps.cvapp.R
 import com.raul.androidapps.cvapp.databinding.CVAppBindingComponent
 import com.raul.androidapps.cvapp.databinding.MainActivityBinding
+import com.raul.androidapps.cvapp.network.Resource
 import com.raul.androidapps.cvapp.resources.ResourcesManagerImpl
 import com.raul.androidapps.cvapp.ui.common.CVAppViewModelFactory
 import com.raul.androidapps.cvapp.utils.ViewUtils
@@ -72,6 +74,19 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
             }
         }
 
+        viewModel.getLoadingState().observe({ lifecycle }) {
+            it?.let { resource ->
+                when (resource.status) {
+                    Resource.Status.SUCCESS -> hideLoading()
+                    Resource.Status.ERROR -> {
+                        hideLoading()
+                        showError(resource.message)
+                    }
+                    Resource.Status.LOADING -> showLoading()
+                }
+            }
+        }
+
     }
 
     override fun onSupportNavigateUp() =
@@ -113,6 +128,20 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
         val lFlags = this.window.decorView.systemUiVisibility
         this.window.decorView.systemUiVisibility =
             if (darkBackgroundTheme) lFlags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() else lFlags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+    }
+
+    private fun showLoading() {
+        binding.progressCircular.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        binding.progressCircular.visibility = View.GONE
+    }
+
+    private fun showError(message: String?) {
+        message?.let {
+            Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+        }
     }
 
 

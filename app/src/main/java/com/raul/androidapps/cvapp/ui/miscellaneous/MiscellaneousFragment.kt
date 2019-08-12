@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.raul.androidapps.cvapp.R
 import com.raul.androidapps.cvapp.databinding.MiscellaneousFragmentBinding
 import com.raul.androidapps.cvapp.ui.common.BaseFragment
-import com.raul.androidapps.cvapp.ui.common.BaseViewModel
 
 class MiscellaneousFragment : BaseFragment() {
 
@@ -33,7 +31,8 @@ class MiscellaneousFragment : BaseFragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MiscellaneousViewModel::class.java)
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(MiscellaneousViewModel::class.java)
         super.onActivityCreated(savedInstanceState)
         adapter = MiscellaneousAdapter(cvAppBindingComponent)
         binding.miscellaneousList.adapter = adapter
@@ -43,11 +42,5 @@ class MiscellaneousFragment : BaseFragment() {
             }
         }
     }
-
-    override fun getSwipeToRefresh(): SwipeRefreshLayout? =
-        binding.swipeRefresh
-
-
-    override fun getViewModel(): BaseViewModel = viewModel
 
 }
