@@ -8,6 +8,32 @@
             android:layout_height="match_parent"
             tools:context=".ui.MainActivity">
 
+        <ImageView
+                android:id="@+id/expertise_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/expertise"
+                android:tint="@color/colorTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/menu_expertise"
+                android:textColor="@color/colorTitle"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/expertise_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/expertise_icon"
+                app:layout_constraintTop_toTopOf="@id/expertise_icon" />
+
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/expertise_list"
                 android:layout_width="0dp"
@@ -21,7 +47,7 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/expertise_icon"
                 tools:itemCount="5"
                 tools:listitem="@layout/expertise_item"
                 tools:showIn="@layout/expertise_fragment" />
