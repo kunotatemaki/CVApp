@@ -31,8 +31,8 @@ class SkillFragment : BaseFragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SkillViewModel::class.java)
         super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SkillViewModel::class.java)
         adapter = SkillsAdapter(bindingComponent = cvAppBindingComponent)
         binding.skillList.adapter = adapter
         viewModel.getSkills().observe({ lifecycle }) {

@@ -15,6 +15,7 @@ class ExpertiseFragment : BaseFragment() {
 
     private lateinit var binding: ExpertiseFragmentBinding
     private lateinit var viewModel: ExpertiseViewModel
+    private lateinit var adapter: ExpertiseAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,10 +32,16 @@ class ExpertiseFragment : BaseFragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(ExpertiseViewModel::class.java)
-        super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
+        adapter = ExpertiseAdapter(cvAppBindingComponent)
+        binding.expertiseList.adapter = adapter
+        viewModel.getExpertise().observe({ lifecycle }) {
+            it?.let {
+                adapter.updateItems(it)
+            }
+        }
     }
 
 }

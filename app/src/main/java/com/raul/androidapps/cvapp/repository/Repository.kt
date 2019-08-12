@@ -7,6 +7,7 @@ import com.raul.androidapps.cvapp.model.Profile
 import com.raul.androidapps.cvapp.network.NetworkServiceFactory
 import com.raul.androidapps.cvapp.network.Resource
 import com.raul.androidapps.cvapp.persistence.PersistenceManager
+import com.raul.androidapps.cvapp.persistence.relations.CompanyWithAllInfo
 import com.raul.androidapps.cvapp.persistence.relations.MiscellaneousWithAllInfo
 import com.raul.androidapps.cvapp.preferences.PreferencesConstants
 import com.raul.androidapps.cvapp.preferences.PreferencesManager
@@ -53,6 +54,11 @@ class Repository @Inject constructor(
     fun getMiscellaneous(gistId: String): LiveData<List<MiscellaneousWithAllInfo>> {
         fetchFromNetwork(gistId, forceFetch = false)
         return persistenceManager.getListOfMiscellaneous(gistId)
+    }
+
+    fun getExpertise(gistId: String): LiveData<List<CompanyWithAllInfo>> {
+        fetchFromNetwork(gistId, forceFetch = false)
+        return persistenceManager.getListOfCompanies(gistId)
     }
 
     fun fetchFromNetwork(gistId: String, forceFetch: Boolean) {
@@ -103,4 +109,6 @@ class Repository @Inject constructor(
             preferencesManager.getLongFromPreferences(PreferencesConstants.PROPERTY_FETCHED_TIMESTAMP)
         return RateLimiter(5, TimeUnit.MINUTES).shouldFetch(lastFetched)
     }
+
+
 }

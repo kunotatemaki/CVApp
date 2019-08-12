@@ -9,4 +9,6 @@
     <string name="mail_subject">New Opportunity</string>
     <string name="permission_explanation">Permission request</string>
     <string name="ok_dialog">OK</string>
+    <string name="tasks">Tasks:</string>
+    <string name="achievements">Achievements:</string>
 </resources>

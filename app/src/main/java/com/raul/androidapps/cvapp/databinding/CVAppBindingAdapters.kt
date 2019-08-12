@@ -11,8 +11,6 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.raul.androidapps.cvapp.R
-import com.raul.androidapps.cvapp.resources.ResourcesManager
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,7 +21,7 @@ import javax.inject.Singleton
 class CVAppBindingAdapters @Inject constructor() {
 
     @BindingAdapter("imageRounded")
-    fun setImageUrlRounded(view: ImageView, url: String? ) {
+    fun setImageUrlRounded(view: ImageView, url: String?) {
         //circle images
         url?.let {
             Glide.with(view.context)
@@ -33,6 +31,7 @@ class CVAppBindingAdapters @Inject constructor() {
                         .circleCrop()
                 )
                 .into(view)
+
         }
     }
 

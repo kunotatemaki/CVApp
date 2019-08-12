@@ -30,8 +30,8 @@ class InfoFragment : BaseFragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(InfoViewModel::class.java)
         super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(InfoViewModel::class.java)
 
         viewModel.getDescription().observe({ this.lifecycle }) {
             it?.let { description ->

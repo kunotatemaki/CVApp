@@ -3,10 +3,13 @@ package com.raul.androidapps.cvapp.ui
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
@@ -28,9 +31,6 @@ import com.raul.androidapps.cvapp.utils.ViewUtils
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 import kotlin.math.abs
-import android.content.pm.PackageManager
-
-
 
 
 class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedListener {
@@ -63,6 +63,19 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
             DataBindingUtil.setContentView(this, R.layout.main_activity, cvAppBindingComponent)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
         binding.appbarLayoutMainActivity.addOnOffsetChangedListener(this)
+
+        binding.bottomNavigation.apply {
+            this.viewTreeObserver.addOnGlobalLayoutListener(object :
+                ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    if (this@apply.height > 0) {
+                        addMarginToFragmentContainer()
+                        this@apply.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                }
+            })
+        }
+
 
         setToolbar(binding.toolbarMainActivity)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -216,7 +229,7 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun callNumber(v: View){
+    fun callNumber(v: View) {
         permissionManager.requestPermissions(
             activity = this,
             callbackAllPermissionsGranted = { launchDialer() },
@@ -228,10 +241,17 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
     }
 
     @SuppressLint("MissingPermission")
-    fun launchDialer(){
+    fun launchDialer() {
         val callIntent = Intent(Intent.ACTION_CALL)
         callIntent.data = Uri.parse("tel:${binding.phoneText.text}")
         startActivity(callIntent)
+    }
+
+    private fun addMarginToFragmentContainer() {
+        (binding.mainContainer.layoutParams as? ViewGroup.MarginLayoutParams)?.let { params ->
+            params.bottomMargin = binding.bottomNavigation.height
+            binding.mainContainer.requestLayout()
+        }
     }
 
 

@@ -18,5 +18,4 @@ class MainViewModel @Inject constructor(
 
 }
 
-//todo splash icon
-//todo test in repo
+//todo landscape

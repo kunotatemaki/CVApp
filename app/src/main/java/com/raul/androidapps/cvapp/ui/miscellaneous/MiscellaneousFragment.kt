@@ -31,9 +31,9 @@ class MiscellaneousFragment : BaseFragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(MiscellaneousViewModel::class.java)
-        super.onActivityCreated(savedInstanceState)
         adapter = MiscellaneousAdapter(cvAppBindingComponent)
         binding.miscellaneousList.adapter = adapter
         viewModel.getMiscellaneous().observe({ lifecycle }) {

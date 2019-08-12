@@ -129,17 +129,17 @@ class RepositoryTest {
         }
 
     }
-//todo expertise
-//    @Test
-//    fun testGetUserInfoLoadsFromDb() {
-//        runBlocking {
-//            val gistId = "gistId"
-//            mockErrorResponse(gistId)
-//            repository.getUserInfo(gistId)
-//            Mockito.verify(persistenceManager).getUserInfo(gistId)
-//        }
-//
-//    }
+
+    @Test
+    fun testGetExpertiseLoadsFromDb() {
+        runBlocking {
+            val gistId = "gistId"
+            mockErrorResponse(gistId)
+            repository.getExpertise(gistId)
+            Mockito.verify(persistenceManager).getListOfCompanies(gistId)
+        }
+
+    }
 
     private suspend fun mockErrorResponse(gistId: String){
         Mockito.`when`(preferencesManager.getLongFromPreferences(PreferencesConstants.PROPERTY_FETCHED_TIMESTAMP))

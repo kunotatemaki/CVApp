@@ -31,9 +31,9 @@ class EducationFragment : BaseFragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(EducationViewModel::class.java)
-        super.onActivityCreated(savedInstanceState)
         adapter = EducationAdapter(bindingComponent = cvAppBindingComponent)
         binding.educationList.adapter = adapter
         viewModel.getEducation().observe({ lifecycle }) {
