@@ -13,7 +13,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation.findNavController
 import com.google.android.material.appbar.AppBarLayout
-import com.raul.androidapps.cvapp.NavGraphDirections
 import com.raul.androidapps.cvapp.R
 import com.raul.androidapps.cvapp.databinding.CVAppBindingComponent
 import com.raul.androidapps.cvapp.databinding.MainActivityBinding
@@ -62,8 +61,8 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
             addOnDestinationChangedListener { _, destination, _ ->
                 binding.appbarLayoutMainActivity.setExpanded(destination.id == R.id.info_fragment)
             }
-            binding.bottomNavigation.setupWithNavController(this)
         }
+            binding.bottomNavigation.setupWithNavController(findNavController(this, R.id.fragment_container))
 
         viewModel.getProfile().observe({ lifecycle }) {
             it?.let {
