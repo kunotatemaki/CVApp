@@ -7,4 +7,6 @@
     <string name="menu_miscellaneous">Diverse</string>
     <string name="description">Description</string>
     <string name="mail_subject">New Opportunity</string>
+    <string name="permission_explanation">Permission request</string>
+    <string name="ok_dialog">OK</string>
 </resources>

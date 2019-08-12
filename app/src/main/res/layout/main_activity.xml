@@ -80,7 +80,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="24dp"
-                            android:layout_marginTop="32dp"
+                            android:layout_marginTop="?attr/actionBarSize"
                             android:src="@drawable/phone_black"
                             android:tint="@color/colorHeaderElements"
                             app:layout_constraintStart_toEndOf="@id/guideline"
@@ -99,7 +99,9 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/phone_icon"
                             app:layout_constraintTop_toTopOf="@id/phone_icon"
-                            tools:text="+34 625 665592" />
+                            tools:text="+34 625 665592"
+                            tools:ignore="UnusedAttribute"
+                            android:onClick="callNumber"/>
 
                     <ImageView
                             android:id="@+id/mail_icon"

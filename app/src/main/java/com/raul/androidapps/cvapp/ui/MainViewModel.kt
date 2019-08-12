@@ -20,5 +20,3 @@ class MainViewModel @Inject constructor(
 
 //todo splash icon
 //todo test in repo
-//permisso apra llamar
-//header

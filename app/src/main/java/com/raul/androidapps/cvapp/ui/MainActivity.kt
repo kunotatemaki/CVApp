@@ -1,5 +1,7 @@
 package com.raul.androidapps.cvapp.ui
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -19,18 +21,23 @@ import com.raul.androidapps.cvapp.R
 import com.raul.androidapps.cvapp.databinding.CVAppBindingComponent
 import com.raul.androidapps.cvapp.databinding.MainActivityBinding
 import com.raul.androidapps.cvapp.network.Resource
+import com.raul.androidapps.cvapp.permission.PermissionManager
 import com.raul.androidapps.cvapp.resources.ResourcesManagerImpl
 import com.raul.androidapps.cvapp.ui.common.CVAppViewModelFactory
 import com.raul.androidapps.cvapp.utils.ViewUtils
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 import kotlin.math.abs
+import android.content.pm.PackageManager
+
+
 
 
 class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedListener {
 
     private lateinit var binding: MainActivityBinding
     private lateinit var viewModel: MainViewModel
+    private val permissionCode: Int = 999
 
     @Inject
     lateinit var viewModelFactory: CVAppViewModelFactory
@@ -40,6 +47,9 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
 
     @Inject
     lateinit var viewUtils: ViewUtils
+
+    @Inject
+    lateinit var permissionManager: PermissionManager
 
     @Inject
     lateinit var cvAppBindingComponent: CVAppBindingComponent
@@ -179,15 +189,49 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
 
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            permissionCode -> {
+                if (grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted
+                    launchDialer()
+                }
+            }
+        }
+    }
+
     fun sendMail(v: View) {
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.data = Uri.parse("mailto:") // only email apps should handle this
-        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf((v as TextView).text))
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf((v as? TextView)?.text))
         intent.putExtra(
             Intent.EXTRA_SUBJECT,
             resourcesManager.getString(R.string.mail_subject)
         )
         startActivity(intent)
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun callNumber(v: View){
+        permissionManager.requestPermissions(
+            activity = this,
+            callbackAllPermissionsGranted = { launchDialer() },
+            permissions = listOf(Manifest.permission.CALL_PHONE),
+            messageRationale = null,
+            showRationaleMessageIfNeeded = false,
+            code = permissionCode
+        )
+    }
+
+    @SuppressLint("MissingPermission")
+    fun launchDialer(){
+        val callIntent = Intent(Intent.ACTION_CALL)
+        callIntent.data = Uri.parse("tel:${binding.phoneText.text}")
+        startActivity(callIntent)
     }
 
 
