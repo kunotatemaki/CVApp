@@ -6,4 +6,5 @@
     <string name="menu_formation">Education</string>
     <string name="menu_miscellaneous">Diverse</string>
     <string name="description">Description</string>
+    <string name="mail_subject">New Opportunity</string>
 </resources>

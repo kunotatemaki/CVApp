@@ -40,40 +40,150 @@
 
                     <ImageView
                             android:id="@+id/background_pic"
+                            imageCenterCropped="@{profile.backgroundPic}"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
+                            android:background="@drawable/cv_back"
                             android:scaleType="centerCrop"
                             app:layout_constraintDimensionRatio="3:2"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="ContentDescription"
-                            imageCenterCropped="@{profile.backgroundPic}"
-                            android:background="@drawable/cv_back"/>
+                            tools:ignore="ContentDescription" />
 
                     <ImageView
                             android:id="@+id/profile_pic_layer"
                             android:layout_width="135dp"
                             android:layout_height="135dp"
                             android:src="@drawable/item_frame"
-                            tools:src="@mipmap/ic_launcher"
-                            app:layout_constraintStart_toStartOf="@id/profile_pic"
-                            app:layout_constraintEnd_toEndOf="@id/profile_pic"
-                            app:layout_constraintTop_toTopOf="@id/profile_pic"
+                            android:visibility="invisible"
                             app:layout_constraintBottom_toBottomOf="@id/profile_pic"
+                            app:layout_constraintEnd_toEndOf="@id/profile_pic"
+                            app:layout_constraintStart_toStartOf="@id/profile_pic"
+                            app:layout_constraintTop_toTopOf="@id/profile_pic"
                             tools:ignore="ContentDescription"
-                            android:visibility="invisible"/>
+                            tools:src="@mipmap/ic_launcher" />
 
                     <ImageView
                             android:id="@+id/profile_pic"
+                            imageRounded="@{profile.profilePic}"
                             android:layout_width="130dp"
                             android:layout_height="130dp"
-                            imageRounded="@{profile.profilePic}"
-                            app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginStart="16dp"
-                            app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            tools:ignore="ContentDescription"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="ContentDescription" />
+
+                    <ImageView
+                            android:id="@+id/phone_icon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="32dp"
+                            android:src="@drawable/phone_black"
+                            android:tint="@color/colorHeaderElements"
+                            app:layout_constraintStart_toEndOf="@id/guideline"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="ContentDescription" />
+
+                    <TextView
+                            android:id="@+id/phone_text"
+                            style="@style/HeaderElement"
+                            fromHtml="@{profile.phone}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="16dp"
+                            app:layout_constraintBottom_toBottomOf="@id/phone_icon"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/phone_icon"
+                            app:layout_constraintTop_toTopOf="@id/phone_icon"
+                            tools:text="+34 625 665592" />
+
+                    <ImageView
+                            android:id="@+id/mail_icon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginTop="16dp"
+                            android:src="@drawable/envelope"
+                            android:tint="@color/colorHeaderElements"
+                            app:layout_constraintStart_toStartOf="@id/phone_icon"
+                            app:layout_constraintTop_toBottomOf="@id/phone_icon"
+                            tools:ignore="ContentDescription" />
+
+                    <TextView
+                            android:id="@+id/mail_text"
+                            style="@style/HeaderElement"
+                            fromHtml="@{profile.email}"
+                            android:onClick="sendMail"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="16dp"
+                            app:layout_constraintBottom_toBottomOf="@id/mail_icon"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/mail_icon"
+                            app:layout_constraintTop_toTopOf="@id/mail_icon"
+                            tools:text="raulfeliz@gmail.com" />
+
+                    <ImageView
+                            android:id="@+id/github_icon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginTop="16dp"
+                            android:src="@drawable/github_black"
+                            android:tint="@color/colorHeaderElements"
+                            app:layout_constraintStart_toStartOf="@id/mail_icon"
+                            app:layout_constraintTop_toBottomOf="@id/mail_icon"
+                            tools:ignore="ContentDescription" />
+
+                    <TextView
+                            android:id="@+id/github_text"
+                            style="@style/HeaderElement"
+                            fromHtml="@{profile.github}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="16dp"
+                            app:layout_constraintBottom_toBottomOf="@id/github_icon"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/github_icon"
+                            app:layout_constraintTop_toTopOf="@id/github_icon"
+                            tools:text="Github" />
+
+                    <ImageView
+                            android:id="@+id/linkedin_icon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginTop="16dp"
+                            android:src="@drawable/envelope"
+                            android:tint="@color/colorHeaderElements"
+                            app:layout_constraintStart_toStartOf="@id/github_icon"
+                            app:layout_constraintTop_toBottomOf="@id/github_icon"
+                            tools:ignore="ContentDescription" />
+
+                    <TextView
+                            android:id="@+id/linkedin_text"
+                            style="@style/HeaderElement"
+                            fromHtml="@{profile.linkedin}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="16dp"
+                            app:layout_constraintBottom_toBottomOf="@id/linkedin_icon"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/linkedin_icon"
+                            app:layout_constraintTop_toTopOf="@id/linkedin_icon"
+                            tools:text="Linkedin" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.4" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.Toolbar
@@ -84,16 +194,7 @@
                         app:contentInsetStart="70dp"
                         app:layout_collapseMode="pin" />
 
-<!--                <TextView-->
-<!--                        android:id="@+id/recipe_name_recipe_details"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="bottom"-->
-<!--                        android:layout_marginStart="@dimen/title_margin_expanded"-->
-<!--                        android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
-<!--                        android:layout_marginBottom="20dp"-->
-<!--                        android:textAppearance="@style/Theme.ExpandedText"-->
-<!--                        app:layout_anchor="@id/appbarlayout_recipe_details" />-->
+
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
 

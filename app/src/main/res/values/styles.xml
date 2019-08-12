@@ -20,4 +20,11 @@
         <item name="android:textColor">@color/dialogButton</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="HeaderElement" >
+        <item name="android:textColor">@color/colorHeaderElements</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
 </resources>

@@ -1,9 +1,12 @@
 package com.raul.androidapps.cvapp.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
@@ -18,9 +21,9 @@ import com.raul.androidapps.cvapp.resources.ResourcesManagerImpl
 import com.raul.androidapps.cvapp.ui.common.CVAppViewModelFactory
 import com.raul.androidapps.cvapp.utils.ViewUtils
 import dagger.android.support.DaggerAppCompatActivity
-import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.abs
+
 
 class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedListener {
 
@@ -118,7 +121,8 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
 
         val percentage = abs(verticalOffset.toFloat() / appBarLayout.totalScrollRange)
 
-        val finalHeight = binding.toolbarMainActivity.height - viewUtils.getPxFromDp(resourcesManager, 16f)
+        val finalHeight =
+            binding.toolbarMainActivity.height - viewUtils.getPxFromDp(resourcesManager, 16f)
         val diff = originalProfilePicHeight - finalHeight
         val paramsProfilePic = binding.profilePic.layoutParams
         paramsProfilePic.height = (originalProfilePicHeight - diff * percentage).toInt()
@@ -130,9 +134,30 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
         paramsProfilePicLayer.width = paramsProfilePicLayer.height
         binding.profilePicLayer.requestLayout()
 
-        binding.backgroundPic.alpha = 0.4f - percentage
+        binding.backgroundPic.alpha = 0.3f - percentage
         binding.profilePicLayer.alpha = 1 - percentage
+        binding.mailText.alpha = 1 - percentage
+        binding.mailIcon.alpha = 1 - percentage
+        binding.phoneText.alpha = 1 - percentage
+        binding.phoneIcon.alpha = 1 - percentage
+        binding.linkedinIcon.alpha = 1 - percentage
+        binding.linkedinText.alpha = 1 - percentage
+        binding.githubIcon.alpha = 1 - percentage
+        binding.githubText.alpha = 1 - percentage
 
     }
+
+    fun sendMail(v: View) {
+        val intent = Intent(Intent.ACTION_SENDTO)
+        intent.data = Uri.parse("mailto:") // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf((v as TextView).text))
+        intent.putExtra(
+            Intent.EXTRA_SUBJECT,
+            resourcesManager.getString(R.string.mail_subject)
+        )
+        startActivity(intent)
+    }
+
+
 }
 
