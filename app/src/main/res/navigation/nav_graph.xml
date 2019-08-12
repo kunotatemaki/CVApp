@@ -28,6 +28,51 @@
     <fragment android:id="@+id/miscellaneous_fragment"
               android:name="com.raul.androidapps.cvapp.ui.miscellaneous.MiscellaneousFragment"
               android:label="miscellaneous_fragment" tools:layout="@layout/miscellaneous_fragment"/>
+    <action
+            android:id="@+id/action_global_education_fragment"
+            app:destination="@id/education_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/info_fragment" />
+    <action
+            android:id="@+id/action_global_skill_fragment"
+            app:destination="@id/skill_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/info_fragment" />
+    <action
+            android:id="@+id/action_global_miscellaneous_fragment"
+            app:destination="@id/miscellaneous_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/info_fragment" />
+    <action
+            android:id="@+id/action_global_expertise_fragment"
+            app:destination="@id/expertise_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/info_fragment" />
+    <action
+            android:id="@+id/action_global_info_fragment"
+            app:destination="@id/info_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/info_fragment" />
 
 
 </navigation>

@@ -12,8 +12,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.AppBarLayout
+import com.raul.androidapps.cvapp.NavGraphDirections
 import com.raul.androidapps.cvapp.R
 import com.raul.androidapps.cvapp.databinding.CVAppBindingComponent
 import com.raul.androidapps.cvapp.databinding.MainActivityBinding
@@ -52,17 +52,52 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
         binding.appbarLayoutMainActivity.addOnOffsetChangedListener(this)
 
-        val navController = findNavController(this, R.id.fragment_container)
         setToolbar(binding.toolbarMainActivity)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             updateStatusBar(resourcesManager.getColor(android.R.color.white))
         }
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
-            binding.appbarLayoutMainActivity.setExpanded(it.itemId == R.id.info_fragment)
-            true
+            binding.appbarLayoutMainActivity.setExpanded(it.itemId == R.id.menu_info_fragment)
+            when (it.itemId) {
+                R.id.menu_education_fragment -> {
+                    findNavController(
+                        this,
+                        R.id.fragment_container
+                    ).navigate(NavGraphDirections.actionGlobalEducationFragment())
+                    true
+                }
+                R.id.menu_skill_fragment -> {
+                    findNavController(
+                        this,
+                        R.id.fragment_container
+                    ).navigate(NavGraphDirections.actionGlobalSkillFragment())
+                    true
+                }
+                R.id.menu_info_fragment -> {
+                    findNavController(
+                        this,
+                        R.id.fragment_container
+                    ).navigate(NavGraphDirections.actionGlobalInfoFragment())
+                    true
+                }
+                R.id.menu_expertise_fragment -> {
+                    findNavController(
+                        this,
+                        R.id.fragment_container
+                    ).navigate(NavGraphDirections.actionGlobalExpertiseFragment())
+                    true
+                }
+                R.id.menu_miscellaneous_fragment-> {
+                    findNavController(
+                        this,
+                        R.id.fragment_container
+                    ).navigate(NavGraphDirections.actionGlobalMiscellaneousFragment())
+                    true
+                }
+                else -> false
+            }
         }
-        binding.bottomNavigation.setupWithNavController(navController)
 
         viewModel.getProfile().observe({ lifecycle }) {
             it?.let {
