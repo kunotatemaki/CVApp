@@ -69,7 +69,8 @@ class RepositoryTest {
         runBlocking {
             val gistId = "gistId"
             mockErrorResponse(gistId)
-            repository.fetchFromNetwork(gistId, true)
+            val job = repository.fetchFromNetwork(gistId, true)
+            job?.join()
             val value = repository.getLoadingState().getItemFromLiveData()
             assertEquals(value.status, Resource.Status.ERROR)
         }
@@ -80,7 +81,8 @@ class RepositoryTest {
         runBlocking {
             val gistId = "gistId"
             mockSuccessResponse(gistId)
-            repository.fetchFromNetwork(gistId, true)
+            val job =  repository.fetchFromNetwork(gistId, true)
+            job?.join()
             val value = repository.getLoadingState().getItemFromLiveData()
             assertEquals(value.status, Resource.Status.SUCCESS)
         }

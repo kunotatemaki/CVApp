@@ -12,10 +12,7 @@ import com.raul.androidapps.cvapp.persistence.relations.MiscellaneousWithAllInfo
 import com.raul.androidapps.cvapp.preferences.PreferencesConstants
 import com.raul.androidapps.cvapp.preferences.PreferencesManager
 import com.raul.androidapps.cvapp.utils.RateLimiter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -61,13 +58,15 @@ class Repository @Inject constructor(
         return persistenceManager.getListOfCompanies(gistId)
     }
 
-    fun fetchFromNetwork(gistId: String, forceFetch: Boolean) {
+    fun fetchFromNetwork(gistId: String, forceFetch: Boolean): Job? =
         if (forceFetch || shouldFetch()) {
             GlobalScope.launch {
                 fetchFromNetworkAsync(gistId)
             }
+        } else {
+            null
         }
-    }
+
 
     @Suppress("UselessCallOnCollection")
     @VisibleForTesting
