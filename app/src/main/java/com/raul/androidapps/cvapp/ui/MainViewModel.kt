@@ -12,7 +12,7 @@ class MainViewModel @Inject constructor(
     private val repository: Repository
 ) : BaseViewModel(repository) {
 
-    fun getProfile(): LiveData<Profile> = repository.geUserInfo(getGistId())
+    fun getProfile(): LiveData<Profile> = repository.getUserInfo(getGistId())
 
     fun getLoadingState(): LiveData<Resource<Void>> = repository.getLoadingState()
 

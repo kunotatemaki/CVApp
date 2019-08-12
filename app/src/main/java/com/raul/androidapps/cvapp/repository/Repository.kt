@@ -35,7 +35,7 @@ class Repository @Inject constructor(
 
     fun getLoadingState(): LiveData<Resource<Void>> = loadingState
 
-    fun geUserInfo(gistId: String): LiveData<Profile> {
+    fun getUserInfo(gistId: String): LiveData<Profile> {
         fetchFromNetwork(gistId, forceFetch = false)
         return persistenceManager.getUserInfo(gistId)
     }

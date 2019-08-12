@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class CVResponse constructor(
     @SerializedName("files")
-    val files: CVFiles
+    val files: CVFiles?
 ) {
     data class CVFiles constructor(
         @SerializedName("Education.json")
