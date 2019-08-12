@@ -17,5 +17,3 @@ class MainViewModel @Inject constructor(
     fun getLoadingState(): LiveData<Resource<Void>> = repository.getLoadingState()
 
 }
-
-//todo landscape

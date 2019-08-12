@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="profile"
+                type="com.raul.androidapps.cvapp.model.Profile" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_main_activity"
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/transparent"
+                app:layout_constraintEnd_toStartOf="@id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="@{profile.name}" />
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.4" />
+
+
+        <androidx.core.widget.NestedScrollView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+                app:layout_constraintEnd_toStartOf="@id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar_main_activity">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <ImageView
+                        android:id="@+id/background_pic"
+                        imageCenterCropped="@{profile.backgroundPic}"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/cv_back"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintDimensionRatio="2:1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription" />
+
+                <ImageView
+                        android:id="@+id/profile_pic_layer"
+                        android:layout_width="125dp"
+                        android:layout_height="125dp"
+                        android:src="@drawable/item_frame"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@id/profile_pic"
+                        app:layout_constraintEnd_toEndOf="@id/profile_pic"
+                        app:layout_constraintStart_toStartOf="@id/profile_pic"
+                        app:layout_constraintTop_toTopOf="@id/profile_pic"
+                        tools:ignore="ContentDescription"
+                        tools:src="@mipmap/ic_launcher" />
+
+                <ImageView
+                        android:id="@+id/profile_pic"
+                        imageRounded="@{profile.profilePic}"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        app:layout_constraintBottom_toBottomOf="@id/background_pic"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/background_pic"
+                        tools:ignore="ContentDescription" />
+
+                <ImageView
+                        android:id="@+id/phone_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:src="@drawable/phone_black"
+                        android:tint="@color/colorHeaderElements"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/background_pic"
+                        tools:ignore="ContentDescription" />
+
+                <TextView
+                        android:id="@+id/phone_text"
+                        style="@style/HeaderElement"
+                        fromHtml="@{profile.phone}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:onClick="callNumber"
+                        app:layout_constraintBottom_toBottomOf="@id/phone_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/phone_icon"
+                        app:layout_constraintTop_toTopOf="@id/phone_icon"
+                        tools:ignore="UnusedAttribute"
+                        tools:text="+34 625 665592" />
+
+                <ImageView
+                        android:id="@+id/mail_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="16dp"
+                        android:src="@drawable/envelope"
+                        android:tint="@color/colorHeaderElements"
+                        app:layout_constraintStart_toStartOf="@id/phone_icon"
+                        app:layout_constraintTop_toBottomOf="@id/phone_icon"
+                        tools:ignore="ContentDescription" />
+
+                <TextView
+                        android:id="@+id/mail_text"
+                        style="@style/HeaderElement"
+                        fromHtml="@{profile.email}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:onClick="sendMail"
+                        app:layout_constraintBottom_toBottomOf="@id/mail_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/mail_icon"
+                        app:layout_constraintTop_toTopOf="@id/mail_icon"
+                        tools:text="raulfeliz@gmail.com" />
+
+                <ImageView
+                        android:id="@+id/github_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="16dp"
+                        android:src="@drawable/github_black"
+                        android:tint="@color/colorHeaderElements"
+                        app:layout_constraintStart_toStartOf="@id/mail_icon"
+                        app:layout_constraintTop_toBottomOf="@id/mail_icon"
+                        tools:ignore="ContentDescription" />
+
+                <TextView
+                        android:id="@+id/github_text"
+                        style="@style/HeaderElement"
+                        fromHtml="@{profile.github}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="16dp"
+                        app:layout_constraintBottom_toBottomOf="@id/github_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/github_icon"
+                        app:layout_constraintTop_toTopOf="@id/github_icon"
+                        tools:text="Github" />
+
+                <ImageView
+                        android:id="@+id/linkedin_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="16dp"
+                        android:src="@drawable/envelope"
+                        android:tint="@color/colorHeaderElements"
+                        app:layout_constraintStart_toStartOf="@id/github_icon"
+                        app:layout_constraintTop_toBottomOf="@id/github_icon"
+                        tools:ignore="ContentDescription" />
+
+                <TextView
+                        android:id="@+id/linkedin_text"
+                        style="@style/HeaderElement"
+                        fromHtml="@{profile.linkedin}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="16dp"
+                        app:layout_constraintBottom_toBottomOf="@id/linkedin_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/linkedin_icon"
+                        app:layout_constraintTop_toTopOf="@id/linkedin_icon"
+                        tools:text="Linkedin" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <fragment
+                android:id="@+id/fragment_container"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:defaultNavHost="true"
+                app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/guideline"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navGraph="@navigation/nav_graph" />
+
+        <ProgressBar
+                android:id="@+id/progress_circular"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="64dp"
+                android:indeterminate="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/guideline"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation"
+                style="@style/Widget.MaterialComponents.BottomNavigationView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:menu="@menu/bottom_navigation_menu" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+

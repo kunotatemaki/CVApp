@@ -62,7 +62,7 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
         binding =
             DataBindingUtil.setContentView(this, R.layout.main_activity, cvAppBindingComponent)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
-        binding.appbarLayoutMainActivity.addOnOffsetChangedListener(this)
+        binding.appbarLayoutMainActivity?.addOnOffsetChangedListener(this)
 
         binding.bottomNavigation.apply {
             this.viewTreeObserver.addOnGlobalLayoutListener(object :
@@ -84,7 +84,7 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
 
         findNavController(this, R.id.fragment_container).apply {
             addOnDestinationChangedListener { _, destination, _ ->
-                binding.appbarLayoutMainActivity.setExpanded(destination.id == R.id.info_fragment)
+                binding.appbarLayoutMainActivity?.setExpanded(destination.id == R.id.info_fragment)
             }
             binding.bottomNavigation.setupWithNavController(this)
         }
@@ -125,7 +125,7 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
     }
 
     private fun setTitle(title: String) {
-        binding.collapsingToolbarMainActivity.title = title
+        binding.collapsingToolbarMainActivity?.title = title
         supportActionBar?.title = title
     }
 
@@ -248,9 +248,9 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
     }
 
     private fun addMarginToFragmentContainer() {
-        (binding.mainContainer.layoutParams as? ViewGroup.MarginLayoutParams)?.let { params ->
+        (binding.mainContainer?.layoutParams as? ViewGroup.MarginLayoutParams)?.let { params ->
             params.bottomMargin = binding.bottomNavigation.height
-            binding.mainContainer.requestLayout()
+            binding.mainContainer?.requestLayout()
         }
     }
 
