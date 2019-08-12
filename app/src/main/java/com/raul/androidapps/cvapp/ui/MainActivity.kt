@@ -21,6 +21,7 @@ import com.raul.androidapps.cvapp.resources.ResourcesManagerImpl
 import com.raul.androidapps.cvapp.ui.common.CVAppViewModelFactory
 import com.raul.androidapps.cvapp.utils.ViewUtils
 import dagger.android.support.DaggerAppCompatActivity
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.abs
 
@@ -57,46 +58,11 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
             updateStatusBar(resourcesManager.getColor(android.R.color.white))
         }
 
-        binding.bottomNavigation.setOnNavigationItemSelectedListener {
-            binding.appbarLayoutMainActivity.setExpanded(it.itemId == R.id.menu_info_fragment)
-            when (it.itemId) {
-                R.id.menu_education_fragment -> {
-                    findNavController(
-                        this,
-                        R.id.fragment_container
-                    ).navigate(NavGraphDirections.actionGlobalEducationFragment())
-                    true
-                }
-                R.id.menu_skill_fragment -> {
-                    findNavController(
-                        this,
-                        R.id.fragment_container
-                    ).navigate(NavGraphDirections.actionGlobalSkillFragment())
-                    true
-                }
-                R.id.menu_info_fragment -> {
-                    findNavController(
-                        this,
-                        R.id.fragment_container
-                    ).navigate(NavGraphDirections.actionGlobalInfoFragment())
-                    true
-                }
-                R.id.menu_expertise_fragment -> {
-                    findNavController(
-                        this,
-                        R.id.fragment_container
-                    ).navigate(NavGraphDirections.actionGlobalExpertiseFragment())
-                    true
-                }
-                R.id.menu_miscellaneous_fragment-> {
-                    findNavController(
-                        this,
-                        R.id.fragment_container
-                    ).navigate(NavGraphDirections.actionGlobalMiscellaneousFragment())
-                    true
-                }
-                else -> false
+        findNavController(this, R.id.fragment_container).apply {
+            addOnDestinationChangedListener { _, destination, _ ->
+                binding.appbarLayoutMainActivity.setExpanded(destination.id == R.id.info_fragment)
             }
+            binding.bottomNavigation.setupWithNavController(this)
         }
 
         viewModel.getProfile().observe({ lifecycle }) {
