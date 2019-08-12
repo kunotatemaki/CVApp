@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.raul.androidapps.cvapp.R
 import com.raul.androidapps.cvapp.databinding.CVAppBindingComponent
@@ -20,7 +21,6 @@ import com.raul.androidapps.cvapp.resources.ResourcesManagerImpl
 import com.raul.androidapps.cvapp.ui.common.CVAppViewModelFactory
 import com.raul.androidapps.cvapp.utils.ViewUtils
 import dagger.android.support.DaggerAppCompatActivity
-import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.abs
 
@@ -61,8 +61,8 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
             addOnDestinationChangedListener { _, destination, _ ->
                 binding.appbarLayoutMainActivity.setExpanded(destination.id == R.id.info_fragment)
             }
+            binding.bottomNavigation.setupWithNavController(this)
         }
-            binding.bottomNavigation.setupWithNavController(findNavController(this, R.id.fragment_container))
 
         viewModel.getProfile().observe({ lifecycle }) {
             it?.let {
@@ -73,6 +73,9 @@ class MainActivity : DaggerAppCompatActivity(), AppBarLayout.OnOffsetChangedList
         }
 
     }
+
+    override fun onSupportNavigateUp() =
+        findNavController(this, R.id.fragment_container).navigateUp()
 
     private fun setToolbar(toolbar: Toolbar, title: String? = null) {
         setSupportActionBar(toolbar)
