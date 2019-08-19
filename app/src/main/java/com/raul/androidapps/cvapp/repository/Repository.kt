@@ -13,7 +13,6 @@ import com.raul.androidapps.cvapp.preferences.PreferencesConstants
 import com.raul.androidapps.cvapp.preferences.PreferencesManager
 import com.raul.androidapps.cvapp.utils.RateLimiter
 import kotlinx.coroutines.*
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -103,7 +102,6 @@ class Repository @Inject constructor(
                     loadingState.postValue(Resource.error("Error Downloading info", null))
                 }
             } catch (e: Throwable) {
-                Timber.e(e.message)
                 loadingState.postValue(Resource.error("Error Downloading info", null))
             }
         }
