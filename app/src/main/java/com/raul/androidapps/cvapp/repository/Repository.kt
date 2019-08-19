@@ -13,6 +13,7 @@ import com.raul.androidapps.cvapp.preferences.PreferencesConstants
 import com.raul.androidapps.cvapp.preferences.PreferencesManager
 import com.raul.androidapps.cvapp.utils.RateLimiter
 import kotlinx.coroutines.*
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -73,31 +74,36 @@ class Repository @Inject constructor(
     suspend fun fetchFromNetworkAsync(gistId: String) =
         withContext(Dispatchers.IO) {
             loadingState.postValue(Resource.loading(null))
-            val response = networkServiceFactory.getServiceInstance().getCVInfo(gistId)
-            if (response.isSuccessful) {
-                loadingState.postValue(Resource.success(null))
-                preferencesManager.setLongIntoPreferences(
-                    PreferencesConstants.PROPERTY_FETCHED_TIMESTAMP,
-                    System.currentTimeMillis()
-                )
-                response.body()?.files?.profileContent?.toProfile()?.let {
-                    persistenceManager.insertUserInfo(it, gistId)
-                }
-
-                response.body()?.files?.educationContent?.toListOfEducationItems()?.let {
-                    persistenceManager.insertEducation(it.filterNotNull(), gistId)
-                }
-                response.body()?.files?.expertiseContent?.toListOfExpertiseItems()?.let {
-                    persistenceManager.insertListOfCompanies(it.filterNotNull(), gistId)
-                }
-                response.body()?.files?.skillContent?.toListOfSkillItems()?.let {
-                    persistenceManager.insertListOfSkills(it.filterNotNull(), gistId)
-                }
-                response.body()?.files?.miscellaneousContent?.toListOfMiscellaneousItems()
-                    ?.let {
-                        persistenceManager.insertListOfMiscellaneous(it.filterNotNull(), gistId)
+            try {
+                val response = networkServiceFactory.getServiceInstance().getCVInfo(gistId)
+                if (response.isSuccessful) {
+                    loadingState.postValue(Resource.success(null))
+                    preferencesManager.setLongIntoPreferences(
+                        PreferencesConstants.PROPERTY_FETCHED_TIMESTAMP,
+                        System.currentTimeMillis()
+                    )
+                    response.body()?.files?.profileContent?.toProfile()?.let {
+                        persistenceManager.insertUserInfo(it, gistId)
                     }
-            } else {
+
+                    response.body()?.files?.educationContent?.toListOfEducationItems()?.let {
+                        persistenceManager.insertEducation(it.filterNotNull(), gistId)
+                    }
+                    response.body()?.files?.expertiseContent?.toListOfExpertiseItems()?.let {
+                        persistenceManager.insertListOfCompanies(it.filterNotNull(), gistId)
+                    }
+                    response.body()?.files?.skillContent?.toListOfSkillItems()?.let {
+                        persistenceManager.insertListOfSkills(it.filterNotNull(), gistId)
+                    }
+                    response.body()?.files?.miscellaneousContent?.toListOfMiscellaneousItems()
+                        ?.let {
+                            persistenceManager.insertListOfMiscellaneous(it.filterNotNull(), gistId)
+                        }
+                } else {
+                    loadingState.postValue(Resource.error("Error Downloading info", null))
+                }
+            } catch (e: Throwable) {
+                Timber.e(e.message)
                 loadingState.postValue(Resource.error("Error Downloading info", null))
             }
         }
